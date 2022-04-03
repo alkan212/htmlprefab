@@ -1,0 +1,662 @@
+{% extends "base.html" %}
+{% load static %}
+
+
+
+{% block head %}
+
+<style back_button>
+
+#back_button{
+    --color : #0070ff;
+    --size: 50px;
+    position: absolute;
+    width: var(--size);
+    height: var(--size);
+    border-radius: 50%;
+    background-color: transparent;
+    border:solid 2px var(--color);
+    display: block;
+    justify-content: center;
+    align-items: center;
+    margin-top:20px;
+    margin-left:20px;
+    cursor: pointer;
+    z-index: 1;
+    transition: 0.2s;
+    border-radius: 50px;
+    overflow: hidden;
+}
+#back_button i{
+    position: absolute;
+    color:var(--color);
+    font-size:16px;
+    transform: translate(-55%,-55%);
+    left: calc(var(--size)/2);
+    top: calc(var(--size)/2);
+    transition: 0.2s cubic-bezier(0.35, -0.4, 1, 1.9);
+}
+#back_button p{
+    position: absolute;
+    white-space: nowrap;
+    transform: translate(-55%,-65%);
+    left: calc(var(--size)/2);
+    top: calc(var(--size)/2);
+    margin-left: 60px;
+    color:var(--color);
+    font-size: 16px;
+    letter-spacing: 1px;
+}
+
+#back_button:hover{
+    width: calc(var(--size)*2.7);
+    border-radius: 50px;
+}
+
+#back_button:hover i{
+    transform: rotateY(180deg) translate(-0%,-55%);
+}
+
+</style>
+
+<style>
+    #global{
+        position: relative;
+        margin-top:20px;
+        min-height: 200px;
+        max-height: 300px;
+        height:50vh;
+        width:100%;
+        background-color:transparent;
+        overflow-x: hidden;
+        overflow-y: hidden;
+        display: flex;
+        justify-content:center;
+        align-items:center;
+    }
+    #global img{
+        width:100%;
+        min-width:1896px;
+        height:100%;
+    }
+    #on_img{
+        top:0px;
+        position:absolute;
+        width:100%;
+        height: 100%;
+        background-color: transparent;
+        display: flex;
+        justify-content:center;
+        align-items:center;
+        flex-direction:column;
+    }
+    #global h1{
+        color:rgb(0, 0, 0);
+        font-size:100px;
+        font-weight:900;
+        letter-spacing: 6px;
+        background-image: url("static/1000x1000.png");
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        text-align: center;
+    }
+    #on_img p{
+        color:white;
+        font-size:20px;
+        font-weight:100;
+        position:relative;
+        top:10%;
+        cursor: pointer;
+        transition: 0.2s;
+        display: flex;
+        flex-direction:column;
+        align-items:center;
+    }
+    #on_img p:hover{
+       
+    }
+    #on_img p i{
+        color:white;
+        top:-12px;
+        position: relative;
+        opacity: 0;
+        transition:0.2s;
+    }
+    #on_img p:hover i{
+        top:12%;
+        opacity: 1;
+    }
+
+    #content{
+        position: relative;
+        left:50%;
+        transform:translateX(-50%);
+        display: flex;
+        flex-wrap: wrap;
+        width:80%;
+        background-color:transparent;
+        justify-content:center;
+        
+    }
+    .box{
+        position: relative;
+        width: 250px;
+        height:250px;
+        margin: 30px;
+        border:solid 0px #1e3ca0;
+        display: flex;
+        justify-content:center;
+        align-items:center;
+        transition: 0.1s;
+        cursor: pointer;
+        border-radius: 20px;
+        flex-direction: column;
+        background-image: url("static/250x250.png");
+        filter: brightness(97%);
+    }
+    .box::before{
+        content:"";
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        width: 97%;
+        height:97%;
+        background-color: rgb(255, 255, 255);
+        border-radius: 17px;
+        z-index: -1;
+    }
+    .box *{
+        z-index: 1;
+    }
+    .box:hover{
+
+    }
+    .box h1{
+        transition:0.2s;
+        font-weight: 100;
+        color:#232323;
+    }
+    .box p{
+        color:#232323;
+        font-size: 24px;    
+        position: absolute;
+        left:50%;
+        top:50%;
+        transform:translate(-50%, -50%);
+        opacity: 0;
+        transition:0.2s;
+    }
+    .box:hover h1{
+        letter-spacing:1px;
+    }
+    .box:hover p{
+        opacity: 1;
+        top:65%;
+    }
+    #horizontal_list{
+        position: relative;
+        left:50%;
+        transform:translateX(-50%);
+        margin-top: 0px;
+        margin-bottom: 20px;
+        width:50%;
+        overflow-x: auto;
+        border:solid 2px transparent;
+        height:100px;
+        padding:5px;
+        display: flex;
+        align-items:center;
+    }
+    .horizontal_list_items{
+        height:100%;
+        width:auto;
+        background-color: transparent;
+        margin-left: 10px;
+        margin-right: 10px;
+        padding:10px;
+        display: flex;
+        justify-content:center;
+        align-items:center;
+        cursor: pointer;
+        flex-grow: 1;
+        position: relative;
+    }
+    .horizontal_list_items:hover .horizontal_list_border{
+        width:90%; 
+    }
+    .horizontal_list_between{
+        height:50%;
+        width:0px;
+        background-color:#1b30a7;
+    }
+    .horizontal_list_items p{
+        color:#232323;
+        font-size: 22px;
+    }
+    .horizontal_list_border{
+        position:absolute; 
+        top:100%; 
+        width:00%; 
+        height:2px;
+        background-color: #232323;
+        transition: 0.2s;
+    }
+    #exemple_img{
+        position: absolute;
+        width:100%;
+        height:auto;
+    }
+
+</style>
+
+
+<style type="text/css" prefabs_button>
+
+    .prefab_button{
+        position: relative;
+        width:250px;
+        height:250px;
+        border:solid 1px rgb(212 212 212);
+        cursor: pointer;
+        transition: 0.2s;
+        margin: 25px;
+    }
+    .prefab_button:hover{
+        transform:scale(1.2);
+        border:solid 1px rgba(53, 66, 82, 0);
+    }
+    .prefab_button:hover #likes_footer{
+        opacity: 0;
+    }
+    .prefab_button img{
+        position: absolute;
+        width: 100%;
+        height: auto;
+        left:50%;
+        top:50%;
+        transform: translate(-50%,-50%);
+        z-index: -1;
+    }
+
+    #likes{
+        position: absolute;
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        flex-direction: row;
+        background-color:transparent;
+    }
+    #likes i{
+        color:red;
+        font-size:20px;
+        margin-right: 5px;
+    }
+    #likes p{
+        color:rgb(255, 255, 255);
+    }
+
+    #likes_footer{
+        transition: 0.2s;
+        position: absolute;
+        bottom:0px;
+        left:0px;
+        width:100%;
+        height:15%;
+        background-color:rgba(0, 0, 0, 0.2);
+        display:flex;
+        align-items: center;
+        padding-left: 7px;
+        padding-top: 2px;
+    }
+    #description{
+        position: absolute;
+        top:0px;
+        left:0px;
+        background-color:rgba(7, 11, 27, 0.8);
+        width:100%;
+        height:100%;
+        z-index: 1;
+        padding:15px;
+        display:flex;
+        flex-direction: column;
+        opacity: 0;
+        transition: 0.2s;
+    }
+    #description h1{
+        color:white;
+        font-weight: 100;
+    }
+
+    #description p{
+        margin-left: 2px;
+        margin-top: 10px;
+        font-weight: 100;
+        color:rgb(189, 189, 189);
+        word-break: break-word;
+    }
+
+    .header_selected{
+        width: 50%;
+    }
+    .prefab_title{
+        font-family: 'Anton', sans-serif;
+        letter-spacing: 1px;
+    }
+</style>
+
+{% endblock %}
+
+
+ 
+<!-- block content -->
+{% block content %}
+
+
+<!-- logo -->
+{% include 'header.html' %}
+
+
+<!-- category -->
+
+<button id="back_button" onclick="window.location.href = '/home'">
+    <i class="fas fa-arrow-left"></i>
+    <p>go back</p>
+</button>
+
+<div id="global">
+    <h1>{{ title }}</h1>
+</div>
+
+
+<!-- headers -->
+<div id="horizontal_list">
+    <div class="horizontal_list_items" id="div_sort_recent">
+        <p>Recent
+            <div class="horizontal_list_border header_selected"></div>
+        </p>
+    </div>
+    <div class="horizontal_list_items" id="div_sort_like">
+        <p>Like
+            <div class="horizontal_list_border"></div>
+        </p>
+    </div>
+
+    <div class="horizontal_list_items" id="div_sort_view">
+        <p>View
+            <div class="horizontal_list_border"></div>
+        </p>
+    </div>
+</div>
+
+
+<!-- buttons -->
+<div id="content">
+    {% for prefab in prefab_array %}
+
+    <div class="prefab_button" like="{{prefab.like}}" view="{{prefab.view}}" recent="{{prefab.id}}" name="{{prefab.file_name}}" path="{{title}}/{{prefab.file_name}}"
+        recent_index="{{forloop.counter0}}" like_index="" view_index=""
+    >
+
+        {% if prefab.picture == 1 %}
+        <img src="{{prefab.path}}picture.{{prefab.picture_extention}}" id="category_img">
+        {% endif %}
+
+        {% if prefab.picture == 0 %}
+        <img src="{% static 'noimg.png' %}" id="category_img" style="width: 40%; filter: opacity(0.1);">
+        {% endif %}
+
+        <div id="description">
+            <h1 class="prefab_title">{{ prefab.title }}</h1>
+            <p>{{ prefab.description }}</p>
+        </div>
+
+        <div id="likes_footer">
+            <div id="likes">
+                <i class="fas fa-heart"></i>
+                <p>{{ prefab.like }}</p>
+            </div>
+        </div>
+
+    </div>
+
+    {% endfor %}
+</div>
+
+
+<!-- last 
+<div id="content">
+    {% for prefab in prefab_array %}
+        <div class="box" id="prefabs_title" name="{{prefab.file_name}}" path="{{title}}/{{prefab.file_name}}">
+            <h1>{{ prefab.title }}</h1>
+            <img id="exemple_img" src="{{prefab.path}}picture">
+        </div>
+    {% endfor %}
+</div>
+-->
+
+{% endblock %}
+
+
+<div class="prefab_button" like="{{prefab.like}}" view="{{prefab.view}}" recent="{{prefab.id}}" name="{{prefab.file_name}}" path="{{title}}/{{prefab.file_name}}">
+    <img src="{{prefab.path}}picture" id="category_img">  <img src="{% static 'noimg.png' %}" id="category_img" style="width: 40%; filter: opacity(0.1);">
+    <div id="description">
+        <h1>{{ prefab.title }}</h1>
+        <p>{{ prefab.description }}</p>
+    <div id="likes_footer">
+        <div id="likes">
+            <i class="fas fa-heart"></i>
+            <p>{{ prefab.like }}</p>
+
+{% block script %}
+
+
+<script>
+
+var box_list = document.getElementsByClassName("prefab_button");
+window.SORT = "r";
+
+for(var i = 0; i <= box_list.length-1; i++){
+    var box = box_list[i];
+    box.addEventListener("click", function(event){
+        file_name = this.getAttribute("name");
+
+        window.location.href = "/prefab?file=" + file_name+"&s="+window.SORT;
+    })
+}
+
+function add_listener(){
+    var box_list_2 = document.getElementsByClassName("prefab_button");
+    for(var i = 0; i < box_list_2.length; i++){
+        var box = box_list_2[i];
+        box.addEventListener("click", function(event){
+            file_name = this.getAttribute("name");
+
+            window.location.href = "/prefab?file=" + file_name+"&s="+window.SORT;
+        })
+    }
+}
+
+</script>
+
+
+<script sort>
+
+console.log(box_list.length)
+
+var box_data = []
+var box_sortby_recent = []
+var box_sortby_like = []
+var box_sortby_view = []
+   
+
+
+for(var i = 0; i < box_list.length; i++){
+
+    var like = box_list[i].getAttribute("like")
+    var view = box_list[i].getAttribute("view")
+    var name = box_list[i].getAttribute("name")
+    var path = box_list[i].getAttribute("path")
+    var recent = box_list[i].getAttribute("recent")
+
+    box_data.push({
+        "like" : like,
+        "view" : view,
+        "name" : name,
+        "path" : path,
+        "recent" : recent,
+    })
+
+    box_sortby_recent.push(parseInt(recent));
+    box_sortby_like.push(parseInt(like));
+    box_sortby_view.push(parseInt(view));
+}
+
+
+
+box_sortby_recent = box_sortby_recent.sort(function (a, b) {  return a - b;  }).reverse();
+box_sortby_like = box_sortby_like.sort(function (a, b) {  return a - b;  }).reverse();
+box_sortby_view = box_sortby_view.sort(function (a, b) {  return a - b;  }).reverse();
+
+
+function clone_element(element){
+    var node = element.nodeName;
+    var attr = element.attributes;
+    var inner = element.innerHTML;
+    var clone_node = document.createElement(node);
+
+    for(var i = 0; i < attr.length; i++){
+        clone_node.setAttribute(attr[i].localName, attr[i].value);
+        clone_node.innerHTML = inner;
+    }
+    return clone_node;
+}
+
+function clone_array(arr){
+    var clone = [];
+
+    for(var i = 0; i < arr.length; i++){
+        clone.push(arr[i])
+    }
+    return clone
+}
+
+
+var box_list_clone = [];
+for(var i = 0; i < box_list.length; i++){
+    var clone_ele = clone_element(box_list[i])
+    box_list_clone.push(clone_ele)
+}
+
+
+
+function sortby_recent_update(){
+    window.SORT = "r";
+    var parent = document.getElementById("content");
+
+    for(var i = 0; i < box_list_clone.length; i++){
+        parent.appendChild(box_list_clone[i]);
+    }
+}
+
+function sortby_like_update(){
+    window.SORT = "l";
+    var parent = document.getElementById("content");
+  
+    var response = []
+    var clone_box_2 = clone_array(box_list_clone)
+
+    for(var i = 0; i < box_sortby_like.length; i++){
+        var like = box_sortby_like[i] /* 4 1 1 0 0 0 */
+        for(var n = 0; n < box_sortby_like.length; n++){
+            var box_like = parseInt(box_list_clone[n].getAttribute("like"))
+            if(box_like == like){
+                response.push(clone_box_2[n])
+                parent.appendChild(clone_box_2[n]);
+                box_list_clone[n].setAttribute("like", "UPDATED:"+like.toString())
+            }
+        }
+    }
+    /* clear UPDATE on  attr like */
+    for(var i = 0; i < box_list_clone.length; i++){
+        box_list_clone[i].setAttribute("like", box_list_clone[i].getAttribute("like").split(":")[1])
+    }
+    
+    add_listener();
+    return response
+}
+
+function sortby_view_update(){
+    window.SORT = "v";
+    var parent = document.getElementById("content");
+  
+    var response = []
+    var clone_box_2 = clone_array(box_list_clone)
+
+    for(var i = 0; i < box_sortby_view.length; i++){
+        var view = box_sortby_view[i] /* 4 1 1 0 0 0 */
+        for(var n = 0; n < box_sortby_view.length; n++){
+            var box_view = parseInt(box_list_clone[n].getAttribute("view"))
+            if(box_view == view){
+                response.push(clone_box_2[n])
+                parent.appendChild(clone_box_2[n]);
+                box_list_clone[n].setAttribute("view", "UPDATED:"+view.toString())
+            }
+        }
+    }
+
+    /* clear UPDATE on  attr view */
+    for(var i = 0; i < box_list_clone.length; i++){
+        box_list_clone[i].setAttribute("view", box_list_clone[i].getAttribute("view").split(":")[1])
+    }
+    
+    add_listener();
+    return response
+}
+
+
+
+
+
+function remove_header_selected(){
+    var items = document.getElementsByClassName("horizontal_list_border")
+    for(var i = 0; i < items.length; i++){
+        items[i].classList.remove("header_selected")
+    }
+}
+
+
+document.getElementById("div_sort_recent").addEventListener("click", function(e){
+
+    document.getElementById("content").innerHTML = "";
+    sortby_recent_update();
+    
+    remove_header_selected();
+    this.children[1].classList.add("header_selected");
+
+})
+
+
+document.getElementById("div_sort_like").addEventListener("click", function(e){
+
+    document.getElementById("content").innerHTML = "";
+    var boxes = sortby_like_update();
+
+    remove_header_selected();
+    this.children[1].classList.add("header_selected");
+
+})
+
+document.getElementById("div_sort_view").addEventListener("click", function(e){
+    
+    document.getElementById("content").innerHTML = "";
+    var boxes = sortby_view_update();
+
+    remove_header_selected();
+    this.children[1].classList.add("header_selected");
+})
+
+</script>
+
+
+{% endblock %}

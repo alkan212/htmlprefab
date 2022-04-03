@@ -1,0 +1,319 @@
+{% extends "base.html" %}
+{% load static %}
+
+
+
+{% block head %}
+
+<style>
+    #global{
+        position: relative;
+        margin-top:20px;
+        min-height: 400px;
+        max-height: 600px;
+        height:50vh;
+        width:100%;
+        background-color:transparent;
+        overflow-x: hidden;
+        overflow-y: hidden;
+    }
+    #global img{
+        width:100%;
+        min-width:1896px;
+        height:100%;
+    }
+    #on_img{
+        top:0px;
+        position:absolute;
+        width:100%;
+        height: 100%;
+        background-color: transparent;
+        display: flex;
+        justify-content:center;
+        align-items:center;
+        flex-direction:column;
+    }
+    #on_img h1{
+        color:white;
+        font-size:64px;
+        font-weight:100;
+    }
+    #on_img p{
+        color:white;
+        font-size:20px;
+        font-weight:100;
+        position:relative;
+        top:10%;
+        cursor: pointer;
+        transition: 0.2s;
+        display: flex;
+        flex-direction:column;
+        align-items:center;
+    }
+    #on_img p:hover{
+       
+    }
+    #on_img p i{
+        color:white;
+        top:-12px;
+        position: relative;
+        opacity: 0;
+        transition:0.2s;
+    }
+    #on_img p:hover i{
+        top:12%;
+        opacity: 1;
+    }
+
+    #content{
+        position: relative;
+        left:50%;
+        transform:translateX(-50%);
+        display: flex;
+        flex-wrap: wrap;
+        width:80%;
+        background-color:transparent;
+        justify-content:center;
+        z-index: 1;
+        margin-top: 20px;
+        
+    }
+    .box{
+        position: relative;
+        width: 250px;
+        height:250px;
+        margin: 30px;
+        border:solid 0px #1e3ca0;
+        display: flex;
+        justify-content:center;
+        align-items:center;
+        transition: 0.1s;
+        cursor: pointer;
+        border-radius: 20px;
+        flex-direction: column;
+        background-image: url("static/250x250.png");
+        filter: brightness(97%);
+    }
+    .box::before{
+        content:"";
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        width: 97%;
+        height:97%;
+        background-color: rgb(255, 255, 255);
+        border-radius: 17px;
+        z-index: -1;
+    }
+    .box:hover{
+
+    }
+    .box h1{
+        transition:0.2s;
+        font-weight: 100;
+        color:#232323;
+        text-align: center;
+    }
+    .box p{
+        color:#232323;
+        font-size: 24px;    
+        position: absolute;
+        left:50%;
+        top:50%;
+        transform:translate(-50%, -50%);
+        opacity: 0;
+        transition:0.2s;
+    }
+    .box:hover h1{
+     letter-spacing:1px;
+     
+    }
+    .box:hover p{
+        opacity: 1;
+        top:65%;
+    }
+    #horizontal_list{
+        position: relative;
+        left:50%;
+        transform:translateX(-50%);
+        margin-top: 20px;
+        margin-bottom: 20px;
+        width:50%;
+        min-width: 500px;
+        max-width: 1000px;
+        overflow-x: auto;
+        border:solid 2px transparent;
+        height:100px;
+        padding:5px;
+        display: flex;
+        align-items:center;
+    }
+    .horizontal_list_items{
+        height:100%;
+        width:auto;
+        background-color: transparent;
+        margin-left: 10px;
+        margin-right: 10px;
+        padding:10px;
+        display: flex;
+        justify-content:center;
+        align-items:center;
+        cursor: pointer;
+        flex-grow: 1;
+        position: relative;
+    }
+    .horizontal_list_items:hover .horizontal_list_border{
+        width:90%; 
+    }
+    .horizontal_list_between{
+        height:50%;
+        width:0px;
+        background-color:#1b30a7;
+    }
+    .horizontal_list_items p{
+        color:#232323;
+        font-size: 22px;
+    }
+    .horizontal_list_border{
+        position:absolute; 
+        top:100%; 
+        width:0%; 
+        height:2px;
+        background-color: #232323;
+        transition: 0.2s;
+    }
+
+
+    #search_box{
+        --width:400px;
+        position: relative;
+        left:50%;
+        transform: translateX(-50%);
+        z-index: 999;
+        margin-top: 70px;
+    }
+    #search_box_input{
+        border-radius: 5PX;
+    }
+</style>
+
+{% endblock %}
+
+
+ 
+<!-- block content -->
+{% block content %}
+
+{% include 'header.html' %}
+
+<div id="global">
+    <img src="{% static 'back.png' %}">
+    <div id="on_img">
+        <h1>Prefabs</h1>
+<!--    <p id="see_more">see more<i class="fas fa-chevron-down"></i></p>  -->
+        
+    </div>
+</div>
+<!--
+<div id="horizontal_list">
+    <div class="horizontal_list_items">
+        <p>top
+            <div class="horizontal_list_border"></div>
+        </p>
+    </div>
+    <div class="horizontal_list_between"></div>
+
+    <div class="horizontal_list_items">
+        <p>recent
+            <div class="horizontal_list_border"></div>
+        </p>
+    </div>
+</div>
+-->
+
+<div id="search_box" class="search_box">
+    <input id="search_box_input" type="text">
+    <div class="search_items_div">
+
+    </div>
+    <i class="fas fa-search search_icon"></i>
+</div>
+
+
+<div id="content">
+    {% for category in categories %}
+        <div class="box" category="{{ category.name }}">
+            <h1>{{ category.name }}</h1>
+            <p>{{ category.count }}</p>
+        </div>
+    {% endfor %}
+</div>
+
+
+{% endblock %}
+
+
+
+
+
+{% block script %}
+
+
+<script>
+
+var box_list = document.getElementsByClassName("box");
+for(var i = 0; i <= box_list.length-1; i++){
+    var box = box_list[i];
+    box.addEventListener("click", function(event){
+        var category = this.getAttribute("category");
+        window.location.href = "/category?cat="+category;
+    })
+}
+
+var box_list_title = []
+for(var i = 0; i < box_list.length; i++){
+    box_list_title.push(box_list[i].children[0])
+}
+
+function search_box_searcher(item_array){
+    document.getElementById("search_box_input").addEventListener("input", function(e){
+        var value = this.value.toLowerCase()
+        for(var i = 0; i < item_array.length; i++){
+            if(item_array[i].innerText.includes(value)){
+                item_array[i].parentElement.style.width = null;
+                item_array[i].parentElement.style.margin = null;
+                item_array[i].parentElement.style.opacity = null;
+            }else{
+                item_array[i].parentElement.style.width = "0px";
+                item_array[i].parentElement.style.margin = "0px";
+                item_array[i].parentElement.style.opacity = "0";
+            }
+        }
+    })
+}
+
+search_box_searcher(box_list_title)
+
+</script>
+
+
+<script isTextWrap>
+
+
+
+for(var i = 0; i < box_list.length; i++){
+    var title = box_list[i].children[0];
+    var geo = title.getBoundingClientRect();
+    
+    
+
+    if(geo["width"] == 250){
+        onOver(box_list[i], box_list[i].children[1] ,{"top":"75%"})
+    }
+}
+
+</script>
+
+
+{% endblock %}

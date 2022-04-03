@@ -1,0 +1,16 @@
+{
+
+    "sitename" : "HTMLPREFAB",
+    "apps":[
+        {
+            "appname" : "myapp",
+            "templates" : [
+                "base",
+                "index",
+                "home",
+                "login"
+            ]
+        }
+    ]
+
+}

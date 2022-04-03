@@ -1,0 +1,548 @@
+{% extends "base.html" %}
+{% load static %}
+
+
+
+{% block head %}
+
+<style>
+    #global{
+        position: absolute;
+        left:50%;
+        top:100px;
+        transform:translateX(-50%);
+        padding: 70px;
+        border-radius: 00%;
+        transition: 0.5s;
+        background-image: url("static/1000x1000.png");
+        width: 60%;
+        min-width: 500px;
+        max-width: 800px;
+    }
+    #layer{
+        position: absolute;
+        width:calc(100% - 40px);
+        height:calc(100% - 40px);
+        background-color: white;
+        left:50%;
+        top:50%;
+        transform: translate(-50%, -50%);
+        z-index: -1;
+        border-radius:5px;
+    }
+
+    #title_div{
+        margin-bottom: 50px;
+    }
+    #title_div h1{
+        font-size:40px;
+    }
+
+    #form_div{
+        height:80%;
+    }
+
+    #login_form{
+        border:solid 0px #232323;
+        height:100%;
+    }
+
+    .input_div{
+        width:100%;
+        margin-top: 30px;
+        display:flex;
+        flex-direction:row;
+        align-items:center;
+    }
+
+    .input_div label{
+        font-size:18px;
+        margin-left: 15px;
+    }
+
+    .input_div input{
+        border:solid 2px #232323;
+        margin-left:0px;
+        width:400px;
+        height:50px;
+        border-radius: 0px;
+        padding: 5px;
+        font-size:18px;
+    }
+
+    #submit_button{
+        width: 200px;
+        height:100px;
+        background-image: url("static/200x100.png");
+        background-color: transparent;
+        color:white;
+        font-size:18px;
+        border-radius:10px;
+        position: relative;
+        left:50%;
+        transform:translateX(-50%);
+        margin-top: 40px;
+        cursor: pointer;
+        transition: 0s;
+        filter:grayscale(00%);
+    }
+    #submit_button:hover{
+        filter:grayscale(0%);
+        filter: contrast(150%);
+    }
+    #type{
+        width:400px;
+        height:50px;
+        border:solid 2px #232323;
+        margin-top:30px;
+        font-size:18px;
+    }
+    #category{
+        width:400px;
+        height:50px;
+        border:solid 2px #232323;
+        margin-top:30px;
+        font-size:18px;
+        display:flex;
+    }
+    #add_file_div{
+        position: relative;
+        margin-top:30px;
+        width:400px;
+        height:80px;
+        border:solid 2px #232323;
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        cursor: pointer;
+        transition:0.2s;
+    }
+    #add_file_div:hover p{
+        opacity: 0.2;
+    }
+    #add_file_div:hover p:nth-child(2){
+        opacity: 1;
+    }
+    #add_file_div p{
+        position: absolute;
+        transition:0.3s;
+        color:#232323;
+        font-size:20px;
+    }
+    #add_file_div p:nth-child(2){
+        opacity: 0;
+        font-size: 48px;
+    }
+    #fileName{
+        margin-top: 5px;
+        position: relative;
+        font-size:14px;
+        left:50%;
+        transform:translateX(-50%);
+    }
+    #your_prefab{
+        position: relative;
+        border:solid 2px #232323;
+        width:400px;
+        height:50px;
+        border-radius: 0px;
+        padding: 5px;
+    }
+    #your_prefab h1{
+        position: absolute;
+        left:50%;
+        top:50%;
+        transform:translate(-50%,-50%);
+        color:#232323;
+    }
+    #your_prefab h1 i{
+        transition: 0.2s;
+        color:#232323;
+        position: absolute;
+        left:50%;
+        top:50%;
+        transform:translate(-50%,-50%);
+        opacity: 0;
+    }
+    #your_prefab:hover h1 i{
+        opacity: 1;
+        top:calc(50% + 15px);
+    }
+    #p_header{
+        display: grid;
+        grid-template-rows: 10% 50% 20% 20%;
+        height:100px;
+        width:400px;
+    }
+
+    #profile_container{
+        width: 100%;
+        border: solid 0px transparent;
+        position: relative;
+        margin-top: 10px;
+    }
+
+    .profile_item{
+        display: grid;
+        grid-template-columns: 35% 65%;
+        grid-template-rows: 1;
+        height:50px;
+        width: 100%;
+        border-bottom:solid 2px rgb(192, 192, 192);
+        position: relative;
+        margin-top: 40px;
+    }
+    .profile_data_container{
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+    }
+    .profile_data_container p{
+
+    }
+    
+    #profile_prefabs{
+        position: relative;
+        margin-top: 50px;
+        width: 100%;
+        height: 50px;
+        border: solid 2px rgb(63, 63, 63);
+        overflow: hidden;
+        transition: 0.2s;
+    }
+
+    #open_prefab_div{
+        width: 100%;
+        border:solid 0px transparent;
+        height:50px;
+        display: flex;
+        align-items: center;
+        padding-left: 10px;
+        cursor: pointer;
+    }
+    #open_prefab_div p{
+        font-size: 18px;
+    }
+    #open_prefab_div *{
+        margin-left: 10px;
+    }
+
+    #profile_prefab_list{
+        width: 100%;
+        max-height: 540px;
+        border: solid 0px transparent;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        overflow-y: auto;
+        justify-content: space-evenly;
+    }
+    .profile_prefab_list_items{
+        height:75px;
+        width: 100%;
+        border-bottom:solid 2px rgb(231, 231, 231); 
+        display: grid;
+        grid-template-columns: 35% 65%;
+        grid-template-rows: 1;
+    }
+    .profile_prefab_list_items:nth-child(1){
+        border-top:solid 2px rgb(231, 231, 231); 
+    }
+
+    .grid_div{
+        width: 100%;
+        height: 100%;
+    }
+    .profile_prefab_list_items_class{
+        display: flex;
+        align-items: center;
+    }
+    .profile_prefab_list_items_class p{
+        font-size: 20px;
+        margin-left: 20px;
+    }
+    .profile_prefab_list_items_data{
+        display: flex;
+        margin-top: 11px;
+        position: relative;
+    }
+    .profile_prefab_list_items_data img{
+        width: 250px;
+        height: 250px;
+    }
+    .profile_prefab_list_items_data_value{
+        margin-right: 20%;
+        position: relative;
+        left: 10%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+    }
+    .profile_prefab_list_items_data_value *{
+        margin-left: 5px;
+        font-size: 20px;
+    }
+
+    .delete_prefab_div{
+        background-color: transparent; 
+        width: 50px; 
+        height:100%;
+        margin-right: 0px;
+        left:0px; 
+        cursor: pointer;
+        border:solid 0px transparent;
+    }
+    .delete_prefab_div:hover{
+        color:red;
+    }
+
+
+    #logout_button{
+        margin-top: 50px;
+        width: 150px;
+        height: 50px;
+        background-color: transparent;
+        color:#343434;
+        cursor: pointer;
+        border-radius: 5px;
+        border: solid 2px #343434;
+        float: right;
+    }
+    #password_div{
+        cursor: pointer;
+    }
+
+    #box_foot{
+        position: absolute;
+        left: 0px;
+        bottom: 0px;
+        width: 100%;
+        height: 40px;
+        background-color: rgba(0, 0, 0, 0.2);
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        flex-direction: row;
+    }
+    .foot_items{
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+        width: 100%;
+    }
+    .foot_items p{
+        color:white;
+        margin-left: 5px;
+    }
+    #like_icon{
+        color:red;
+    }
+    #view_icon{
+        color:#a200ff;
+    }
+    #dl_icon{
+        color:rgb(255, 136, 0);
+    }
+    #delete_icon{
+        color:white;
+    }
+    #foot_delete{
+        cursor: pointer;
+    }
+
+    #foot_delete:hover i{
+        color:red;
+    }
+</style>
+
+
+
+
+{% endblock %}
+
+
+
+
+
+{% block content %}
+
+
+{% include 'header.html' %}
+
+
+<div id="global">
+    <div id="layer">
+
+    </div>
+    <div id="title_div">
+        <h1>profile</h1>
+    </div>
+
+    <div id="profile_container">
+        <div class="profile_item">
+            <div class="profile_data_container"><p>email</p></div>
+            <div class="profile_data_container"><p>{{user.email}}</p></div>
+        </div>
+        <div class="profile_item">
+            <div class="profile_data_container"><p>password</p></div>
+            <div title="show password" id="password_div" class="profile_data_container"><p id="password">{{user.password}}</p></div>
+        </div>
+    </div>
+
+
+    <!--- prefabs -->
+    <div id="profile_prefabs">
+        <div id="open_prefab_div">
+            <p>prefabs<span id="prefabs_count">({{user_prefabs|length}})</span></p>
+            <i id="prefab_i_toggle" class="fas fa-chevron-up"></i>
+        </div>
+
+        <!-- prefab ITEMS container -->
+        <div id="profile_prefab_list">
+
+        <!--- prefabs ITEMS -->
+            {% for prefab in user_prefabs %}
+                <div class="profile_prefab_list_items_data">
+                    <img src="{{prefab.path}}picture.png">
+
+                    <div id="box_foot">
+                        <div class="foot_items">
+                            <i id="view_icon" class="far fa-eye"></i>
+                            <p id="view_count">{{prefab.view}}</p>
+                        </div>
+                        <div class="foot_items">
+                            <i id="like_icon" class="fas fa-heart"></i>
+                            <p id="like_count">{{prefab.like}}</p>
+                        </div>
+
+                        <div class="foot_items">
+                            <i id="dl_icon" class="fas fa-save"></i>
+                            <p id="dl_count">0</p>
+                        </div>
+                        <div class="foot_items delete_prefab" id="foot_delete" p_id="{{prefab.id}}">
+                            <i id="delete_icon" class="fas fa-times"></i>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+            <!-- end prefab ITEMS -->
+            
+        </div>
+        <!-- end prefab ITEMS container -->
+    </div>
+    <!-- end prefab -->
+    <form method="POST" action="/logout">
+        <input type="submit" id="logout_button" value="logout">
+    </form>
+
+</div>
+
+{% endblock %}
+
+
+
+
+
+{% block script %}
+
+<script>
+
+var u_tocken = "{{u_tocken}}"
+var u_pass = "{{user.password}}"
+var prefabs_length = "{{user_prefabs|length}}"
+
+var prefab_toggle = 0;
+
+
+function show_list_prefabs(){
+    var all_user_prefabs = document.getElementsByClassName("profile_prefab_list_items_data");
+    var items_to_show = 7;
+
+    var h = (50 + (all_user_prefabs.length*75));
+    if (h > (50 + (items_to_show*75))){h = (50 + (items_to_show*75))}
+
+    h = 300*2;
+    document.getElementById('profile_prefabs').style.height = h.toString()+'px';
+    document.getElementById("prefab_i_toggle").setAttribute("class", "fas fa-chevron-down");
+    prefab_toggle = 1;
+}
+
+
+
+function hide_list_prefabs(){
+    var all_user_prefabs = document.getElementsByClassName("profile_prefab_list_items_data");
+    var items_to_show = 4;
+
+    document.getElementById('profile_prefabs').style.height = (50).toString()+'px';
+    document.getElementById("prefab_i_toggle").setAttribute("class", "fas fa-chevron-up");
+    prefab_toggle = 0;
+}
+
+
+document.getElementById("open_prefab_div").addEventListener("click", function(e){
+    var all_user_prefabs = document.getElementsByClassName("profile_prefab_list_items_data");
+    var items_to_show = 4;
+
+    if(prefab_toggle == 0){
+        show_list_prefabs();
+    }else{
+        hide_list_prefabs();
+    }
+
+})
+
+
+/* delete prefabs */
+var del = document.getElementsByClassName('delete_prefab')
+for(var i = 0; i < del.length; i++){
+
+    del[i].addEventListener("click", function(e){
+        
+        var p_id = this.getAttribute("p_id");
+        send_post("delete_prefab", {"p_id": p_id, "u_tocken": u_tocken})
+        
+        this.parentElement.parentElement.remove();
+
+        prefabs_length = prefabs_length - 1
+        document.getElementById('prefabs_count').innerHTML = "("+prefabs_length.toString()+")";
+        show_list_prefabs()
+    })
+}
+
+
+
+/* password */
+var pass_toggle = 0;
+
+function hide_pass(){
+    var l = document.getElementById("password").innerHTML.length
+    document.getElementById("password").innerHTML = ""
+    for(var i = 0; i < l; i++){
+        document.getElementById("password").innerHTML += "*"
+    }
+}hide_pass()
+
+
+function show_pass(){
+    document.getElementById("password").innerHTML = u_pass;
+}
+
+document.getElementById("password_div").addEventListener("click", function(e){
+    if(pass_toggle == 0){
+        show_pass();
+        pass_toggle = 1
+    }else{
+        hide_pass();
+        pass_toggle = 0
+    }
+    
+})
+
+</script>
+
+
+{% endblock %}

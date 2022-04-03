@@ -1,0 +1,433 @@
+{% load static %}
+
+<!DOCTYPE html>
+
+<html lang="fr">
+<style>
+    .center{
+        top:50%;
+        left:50%;
+        transform: translate(-50%,-50%);
+    }
+    #menu{
+        position: absolute;
+        top: 20px;
+        right:20px;
+        overflow: hidden;
+        border-radius: 50%;
+        width:50px;
+        height:50px;
+        background-color: #343434;
+        transition: 0.3s;
+        cursor: pointer;
+    }
+    .menu_items{
+        position: absolute;
+        top: 20px;
+        right:20px;
+        overflow: hidden;
+        border-radius: 50%;
+        width:50px;
+        height:50px;
+        background-color: #343434;
+        transition-property: top, transform, background-color;
+        transition-duration: 0.2s;
+        cursor: pointer;
+        pointer-events:none;
+    }
+    #menu_content{
+        width: 200px;
+        height: 200px;
+        background-color: #343434;
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        align-content: center;
+        padding: 5px;
+        opacity: 0;
+        transition: 0.2s;
+    }
+    #menu_icon{
+        transition: 0.3s;
+        position: absolute;
+        top:50%;
+        left:50%;
+        transform: translate(-50%,-50%);
+        color:white;
+        pointer-events: none;
+    }
+    .menu_like{
+        margin: 5px;
+        width: calc(50% - 10px);
+        height: calc(50% - 10px);
+        border-radius: 13px;
+        border: solid 2px #565656;
+        background-color: #343434;;
+        cursor: pointer;
+        z-index: 1;
+        position: relative;
+    }
+    .menu_like:nth-child(1){
+        border-bottom-right-radius: 50px;
+    }
+    .menu_like:nth-child(2){
+        border-top-right-radius: 50px;
+    }
+    .menu_like:nth-child(3){
+        border-bottom-left-radius: 50px;
+    }
+    .menu_like:nth-child(4){
+        border-top-left-radius: 50px;
+    }
+
+    .menu_like i{
+        color:#565656;
+    }
+    #menu_home{
+        position: absolute;
+        left:50%;
+        top:50%;
+        transform: translate(-50%,-50%);
+        width: calc(100% - 20px);
+        height: calc(100% - 20px);
+        border-radius: 20px;
+        z-index: 0;
+        width: 0%;
+        height: 0%;
+        background-color: rgb(23, 131, 202);
+        transition: 0.3s;
+        cursor: pointer;
+        opacity: 0;
+        padding: 20px;
+    }
+    #menu_home:hover{
+        width: 70%;
+        height: 70%;
+    }
+    #menu_home i{
+        color:white;
+        position: absolute;
+        left:50%;
+        top:50%;
+        transform: translate(-50%,-50%);
+    }
+    #menu_heart:hover{
+        border: solid 2px red;
+    }
+
+    #heart{
+        position: absolute;
+        left:50%;
+        top: 50%;
+        transform: translate(-50%,-50%);
+        font-size: 40px;
+        transition: 0.2s;
+    }
+    .menu_i{
+        pointer-events: none;
+    }
+
+    /* new menu */
+    #menu_items_heart:hover{
+        border:solid 5px red;
+    }
+    #menu_items_back:hover{
+        border:solid 5px #0066ff;
+    }
+    #menu_items_download:hover{
+        border:solid 5px #FF6100;
+    }
+
+    .base_menu_default{
+        padding: 0;
+        margin: 0;
+        font-family: 'Josefin Sans', sans-serif;
+        box-sizing: border-box;
+        border : solid 0px #232323;
+        outline: none;
+    }
+    html{
+        height: 100%;
+    }
+    body{
+        height: 100%;
+        padding: 0px;
+        margin: 0px;
+    }
+    #prefab_frame{
+        width: 100%;
+        height: 100%;
+        padding: 0px;
+        margin: 0px;
+        border: none;
+    }
+</style>
+
+<head>
+    <title id="website_title">Title</title>
+    <link rel="icon" type="image/png href="{% static 'fox.png' %}">
+    <meta charset="UTF-8">
+    <meta name="description" content="Description">
+    <meta name="keywords" content="keywords">
+    <meta name="author" content="you">
+    <meta name="viewport" content="width=device-width, initial-scale=0.9">
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,400;1,300&display=swap" rel="stylesheet">
+</head>
+ 
+<!-- last menu
+<div id="menu">
+    <i class="fas fa-bars" id="menu_icon" class="center"></i>
+    <div id="menu_content">
+        <div class="menu_like" id="menu_heart" toggle="0"><i class="fas fa-heart" id="heart"></i></div>
+        <div class="menu_like"></div>
+        <div class="menu_like"></div>
+        <div class="menu_like"></div>
+
+        <div id="menu_home">
+            <i class="fas fa-home"></i>
+        </div>
+    </div>
+</div>
+-->
+
+<!-- new menu -->
+
+
+<div id="menu" style="z-index: 1;">
+    <i class="fas fa-bars menu_i" id="menu_icon" style="top:50%; left:50%;width:auto; height:auto; font-size: 16px;"></i>
+</div>
+
+<div class="menu_items base_menu_default" id="menu_items_back" item_color="#ff0000" toggle="0" title="back" msg="back">
+    <i class="fas fa-arrow-left menu_i" id="menu_icon" style="top:50%; left:50%;width:auto; height:auto; font-size: 16px;"></i>
+</div>
+
+
+<div class="menu_items base_menu_default" id="menu_items_heart" item_color="#ff0000" toggle="0" title="like" msg="Liked">
+    <i class="fas fa-heart menu_i" id="menu_icon" style="top:50%; left:50%;width:auto; height:auto; font-size: 16px;"></i>
+</div>
+
+
+<div class="menu_items base_menu_default" id="menu_items_download" item_color="#FF6100" toggle="0" title="download" msg="Downloaded">
+    <i class="fas fa-file-download menu_i" id="menu_icon" style="top:50%; left:50%;width:auto; height:auto; font-size: 16px;"></i>
+</div>
+
+
+<body id="content">
+    <iframe sandbox="allow-scripts" id="prefab_frame" srcdoc=""></iframe>
+</body>
+
+
+
+
+<script>
+
+var file_content = decodeURIComponent("{{file_content}}");
+var bucket_path = "{{bucket_path}}";
+var static_file_names_string = "{{static_file_names}}"
+var static_file_names = "{{static_file_names}}"
+
+static_file_names = static_file_names.split("/*s*/");
+if(static_file_names[0] == "/*d*/default"){static_file_names = []}
+if(static_file_names_string == "/*d*/default"){static_file_names_string = ""}
+
+for(var i = 0; i < static_file_names.length; i++){
+    file_content = file_content.replaceAll(static_file_names[i], bucket_path+static_file_names[i])
+}
+
+
+
+document.getElementById("prefab_frame").setAttribute("srcdoc", file_content);
+
+
+var scripts = document.getElementById("content").getElementsByTagName("script");
+
+for(var i = 0; i < scripts.length; i++){
+
+    var script = document.createElement("script");
+    var script_attrs = scripts[i].attributes;
+ 
+    for(var n = 0; n < script_attrs.length; n++){
+        console.log("n : "+n+" / "+"attr : "+script_attrs[n]);
+        script.setAttribute( script_attrs[n].name, script_attrs[n].value );
+    }
+
+    scripts[i].remove();
+    document.body.appendChild(script);
+}
+
+</script>
+
+
+
+<script new menu>
+
+    var all_items_menu = document.getElementsByClassName("menu_items");
+    var gap = 55;
+    var is_menu_open = false;
+
+    function open_menu(){
+        for(var i = 0; i < all_items_menu.length; i++){
+            all_items_menu[i].style.top = ((i*gap)+20+gap).toString()+"px";
+            all_items_menu[i].style.pointerEvents = "all";
+        }
+    }
+    function close_menu(){
+        for(var i = 0; i < all_items_menu.length; i++){
+            all_items_menu[i].style.top = null;
+            all_items_menu[i].style.pointerEvents = null;
+        }
+    }
+
+    function on_click_animation(element){
+        element.addEventListener("click", (e)=>{
+
+            if(element.getAttribute("toggle") == "0"){
+                element.style.backgroundColor = element.getAttribute("item_color");
+                element.setAttribute("toggle", "1");
+                show_text(element.getAttribute("msg"));
+            }else{
+                element.style.backgroundColor = null;
+                element.setAttribute("toggle", "0");
+            }
+            
+
+
+            element.style.transform = "scale(1.2)";
+
+            setTimeout(function(){
+                element.style.transform = null;
+            }, 100)
+        })
+    }
+
+    function update_menu_toggle_onload(element){
+
+    }
+
+    document.getElementById("menu").addEventListener("click", (e)=>{
+        if(is_menu_open == false){
+            open_menu();
+            is_menu_open = true;
+        }else{
+            close_menu();
+            is_menu_open = false;
+        }
+    })
+
+
+
+    function send_get(path, data=undefined, func=noneFunction){
+
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.open("GET", path, true);
+        xmlhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        
+        xmlhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                /*var msg = JSON.parse(this.responseText); */
+                
+                func(this.responseText);
+            };
+        }
+
+        if(data !== undefined){
+            let t = ""
+            for(let obj of Object.keys(data)){
+                t = t + "&" + obj + "=" + data[obj];
+            }
+        
+            xmlhttp.send(t);
+
+        }else{
+            xmlhttp.send();
+        }
+
+    }
+
+    send_get("delete_preview", {}, function(response){
+        console.log(response);
+    })
+
+</script>
+
+
+<!-- LAST MENU SCRIPT
+<script>
+
+/* open menu */
+document.getElementById("menu").addEventListener("click", function(e){
+
+    for(var i = 0; i < all_menu_items.length; i++){
+        all_menu_items[i].style.pointerEvents = null;
+    }
+    
+    this.style.borderRadius = "20px";
+    this.style.width = "200px";
+    this.style.height = "200px";
+    document.getElementById("menu_icon").style.opacity = "0";
+
+    setTimeout(function(){
+        document.getElementById("menu_content").style.opacity = "1";
+        document.getElementById("menu_home").style.opacity = "1";
+    },200)
+})
+
+
+/* close menu */
+document.addEventListener("click", function(e){
+    console.log(e.target, e.target.className)
+    if(e.target !== document.getElementById("menu_content")){
+        if(e.target.id !== "menu_home"){
+            if(e.target.className !== "menu_like"){
+
+                for(var i = 0; i < all_menu_items.length; i++){
+                    all_menu_items[i].style.pointerEvents = "None";
+                }
+
+                document.getElementById("menu_content").style = "";
+                document.getElementById("menu_home").style = "";
+
+                setTimeout(function(){
+                    document.getElementById("menu").style = "";
+                    document.getElementById("menu_icon").style = "";
+                }, 200)   
+            }
+        }
+    }
+})
+
+
+var all_menu_items = document.getElementsByClassName("menu_like");
+
+for(var i = 0; i < all_menu_items.length; i++){
+    all_menu_items[i].style.pointerEvents = "None";
+}
+
+
+document.getElementById("menu_heart").addEventListener("click", (e)=>{
+    var heart = document.getElementById("menu_heart");
+    var h = document.getElementById("heart");
+    console.log(heart.getAttribute("toggle"), typeof(heart.getAttribute("toggle")))
+    if(heart.getAttribute("toggle") == "0"){
+        h.style.color = "red";
+        h.style.transform = "translate(-50%,-50%) scale(1.3)";
+        setTimeout(function(){
+            h.style.transform = "translate(-50%,-50%) scale(1)";
+        }, 100)
+        heart.setAttribute("toggle", "1");
+    }else{
+        h.style.color = null;
+        heart.setAttribute("toggle", "0");
+    }
+   
+})
+
+</script>
+-->
+
+<script src="https://kit.fontawesome.com/107d839ae5.js" crossorigin="anonymous"></script>
+<script src="static/js/util.js" crossorigin="anonymous"></script>
+
+</html>

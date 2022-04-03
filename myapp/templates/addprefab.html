@@ -1,0 +1,1236 @@
+{% extends "base.html" %}
+{% load static %}
+
+
+
+{% block head %}
+
+<style util>
+
+    .center_abs{
+        position: absolute;
+        left: 50%;
+        top:50%;
+        transform: translate(-50%, -50%);
+    }
+    .center_rel{
+        position: absolute;
+        left: 50%;
+        top:50%;
+        transform: translate(-50%, -50%);
+    }
+
+    .center_div{
+        display:flex;
+        justify-content:center;
+        align-items: center;
+    }
+
+</style>
+
+<style>
+    #global{
+        position: absolute;
+        left:50%;
+        top:100px;
+        transform:translateX(-50%);
+        padding: 70px;
+        border-radius: 00%;
+        transition: 0.5s;
+        background-image: url("static/1000x1000.png");
+        width: 60%;
+        min-width: 500px;
+        max-width: 800px;
+    }
+    #layer{
+        position: absolute;
+        width:calc(100% - 40px);
+        height:calc(100% - 40px);
+        background-color: white;
+        left:50%;
+        top:50%;
+        transform: translate(-50%, -50%);
+        z-index: -1;
+        border-radius:5px;
+    }
+
+    #title_div{
+        margin-bottom: 50px;
+    }
+    #title_div h1{
+        font-size:40px;
+    }
+
+    #form_div{
+        height:80%;
+    }
+
+    #login_form{
+        border:solid 0px #232323;
+        height:100%;
+    }
+
+    .input_div{
+        width:100%;
+        margin-top: 30px;
+        display:flex;
+        flex-direction:column;
+    }
+
+    .input_div label{
+        font-size:18px;
+        margin-bottom: 3px;
+    }
+
+    .input_div input{
+        border:solid 2px #232323;
+        margin-left:0px;
+        width:100%;
+        max-width: 500px;
+        height:50px;
+        border-radius: 0px;
+        padding: 5px;
+        font-size:18px;
+    }
+
+    #submit_button{
+        width: 200px;
+        height:100px;
+        background-image: url("static/200x100.png");
+        background-color: transparent;
+        color:rgb(0, 59, 136);
+        font-size:18px;
+        border-radius:10px;
+        position: relative;
+        left:50%;
+        transform:translateX(-50%);
+        margin-top: 40px;
+        cursor: pointer;
+        transition: 0s;
+        filter:grayscale(00%);
+    }
+    #submit_button:hover{
+        filter:grayscale(0%);
+        filter: contrast(150%);
+    }
+    #type{
+        width:100%;
+        height:50px;
+        border:solid 2px #232323;
+        margin-top:30px;
+        font-size:18px;
+        max-width: 500px;
+    }
+    #category{
+        width:100%;
+        max-width: 500px;
+        height:50px;
+        border:solid 2px #232323;
+        font-size:18px;
+        display:flex;
+    }
+    #add_file_div{
+        position: relative;
+        margin-top:30px;
+        width:100%;
+        height:80px;
+        border:solid 2px #232323;
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        cursor: pointer;
+        transition:0.2s;
+    }
+    #add_file_div:hover p{
+        opacity: 0.2;
+    }
+    #add_file_div:hover p:nth-child(2){
+        opacity: 1;
+    }
+    #add_file_div p{
+        position: absolute;
+        transition:0.3s;
+        color:#232323;
+        font-size:20px;
+    }
+    #add_file_div p:nth-child(2){
+        opacity: 0;
+        font-size: 48px;
+    }
+    #fileName{
+        margin-top: 5px;
+        position: relative;
+        font-size:14px;
+        left:50%;
+        transform:translateX(-50%);
+    }
+
+</style>
+
+
+
+<style file container>
+    *{
+        padding: 0;
+        margin: 0;
+        font-family: 'Josefin Sans', sans-serif;
+        box-sizing: border-box;
+        border : solid 0px #232323;
+        outline: none;
+    }
+    #file_traitement{
+        position: relative;
+        margin-top:80px;
+    }
+    #file_traitement_header{
+        position: relative;
+        display: flex;
+        align-items: center;
+    }
+    #file_traitement_header h2{
+        margin-bottom: 5px;
+        letter-spacing:1px;
+        font-size:24px;
+    }
+    #file_traitement_header button{
+        position: absolute;
+        height: 70%;
+        width: 75px;
+        border:solid 0px #343434;
+        border-radius: 10px;
+        right:10px;
+        background-color: #eeeeee;
+        cursor: pointer;
+    }
+    #file_container{
+        position: relative;
+        width:100%;
+        border:solid 2px #232323;
+    }
+    #file_container_static{
+        width:100%;
+        height:200px;
+        display:flex;
+        flex-direction:row;
+    }
+    #file_html_container{
+        width: 200px;
+        height:200px;
+        background-color:transparent;
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        position: relative;
+        cursor:pointer;
+    }
+    #file_html_container p{
+        position:absolute;
+        left:50%;
+        top:50%;
+        transform:translate(-50%, -50%);
+        word-break: break-word;
+        font-size:18px;
+        transition: 0.2s;
+    }
+    #file_html_container p:nth-child(2){
+        font-size: 46px;
+        opacity: 0;
+    }
+    #file_html_container:hover p{
+        opacity: 0.2;
+    }
+    #file_html_container:hover p:nth-child(2){
+        opacity: 1;
+    }
+
+    #file_html_img{
+        transition:0.2s;
+    }
+    #file_html_container:hover #file_html_img{
+        opacity: 0.2;
+    }
+
+    /* STATIC */
+    #file_static_container{
+        position: relative;
+        width: calc(100% - 200px);
+        height:100%;
+        background-color:transparent;
+        border-left: solid 1px #232323;
+        overflow-y: auto;
+        cursor: pointer;
+
+        display: flex;
+        justify-content:start;
+        align-items:center;
+    }
+    #file_static_container:hover p{
+        opacity: 0.2;
+    }
+    #file_static_container:hover p:nth-child(2){
+        opacity: 1;
+    }
+
+    #file_static_container_files{
+        position: absolute;
+        left:0px;
+        top:0px;
+        width: 100%;
+        height:auto;
+        transition: 0.2s;
+    }
+    .static_file_name_div{
+        padding:10px;
+        border-bottom:solid 1px #232323;
+        transition: 0.2s;
+    }
+    .static_file_name_div h5{
+        font-weight: 100;
+    }
+    #file_static_container:hover #file_static_container_files{
+        opacity: 0.2;
+    }
+    #file_static_container p{
+        position:absolute;
+        left:50%;
+        top:50%;
+        transform:translate(-50%, -50%);
+        transition: 0.2s;
+        font-size: 18px;
+        white-space:nowrap;
+    }
+    #file_static_container p:nth-child(2){
+        font-size: 46px;
+        opacity: 0;
+    }
+    .file_static_items{
+        width:100%;
+        height:25px;
+        background-color:transparent;
+        display:flex;
+        flex-direction:row;
+        align-items:center;
+        border-bottom: solid 1px #b9b9b9;
+    }
+    .file_static_items p{
+        font-size: 16px;
+        margin-left: 5px;
+    }
+    .static_count_separator{
+        width: 10%;
+        border-right: solid 0px #232323;
+        height:3px;
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        border-radius: 2px;
+        font-size: 15px;
+    }
+    #add_static_file{
+        position:fixed;
+        width:100%;
+        height:25px;
+        background-color: white;
+    }
+    .hidden{
+        display:none;
+    }
+
+    #file_html_img{
+        position: absolute;
+        left:50%;
+        top:50%;
+        transform:translate(-50%, -50%);
+        width: 100%;
+        height:auto;
+    }
+    #html_file{
+        position: relative;
+        width:100%;
+        height:50px;
+        border-bottom: solid 1px #232323;
+    }
+    #html_file:hover{
+        cursor: pointer;
+    }
+
+    #html_file_text{
+        font-size:17px;
+        opacity: 1;
+    }
+    #html_file_plus{
+        opacity: 0;
+        font-size: 38px;
+    }
+
+    #html_file:hover #html_file_text{
+        opacity: 0.2;
+    }
+    #html_file:hover #html_file_plus{
+        opacity: 1;
+    }
+
+    #button_layer{
+        position: absolute;
+        left:50%;
+        top:50%;
+        transform: translate(-50%,-50%);
+        width: calc(100% - 10px);
+        height: calc(100% - 10px);
+        border-radius: 5px;
+        background-color: white;
+        z-index: -1;
+        transition: 0.3s;
+    }
+
+    #category_div{
+        margin-top: 30px;
+        display: block;
+    }
+    #category_div p{
+        font-size: 18px;
+        margin-bottom: 3px;
+    }
+    #button_response{
+        color:white;
+        font-size: 18px;
+    }
+    #custom_category_div{
+        display: none;
+    }
+    .not_required{
+        left: 0px;                
+        white-space: pre;                                    
+        position: absolute;
+        opacity: 0.2;
+        top: 27px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+</style>
+
+<style canvas>
+
+    #canvas_layer{
+        position:fixed;
+        top:0px;
+        left:0px;
+        background-color: rgba(1, 0, 16, 0.9);
+        width: 100%;
+        height: 100%;
+        z-index: 2;
+        opacity: 0;
+        display: none;
+        transition: 0.2s;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
+    #canvas{    
+    }   
+    #canvas_buttons_div{
+        --width : 100px;
+        --margin: 5px;
+        position: absolute;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        margin-top: 40px;
+        left:50%;
+        top:calc(50% + 150px);
+        transform: translate(-50%,-50%);
+        z-index: 3;
+    }
+    #canvas_button_ok{
+        --color : #0058ff;
+        width: var(--width);
+        height: 50px;
+        border:solid 2px var(--color);
+        background-color: transparent;
+        color:var(--color);
+        font-size: 20px;
+        font-weight: 900;
+        cursor: pointer;
+        border-radius: 3px;
+        margin-left: var(--margin);;
+    }
+    #canvas_button_reset{
+        --color : #0058ff;
+        width: var(--width);
+        height: 50px;
+        border:solid 2px var(--color);
+        background-color: transparent;
+        color:var(--color);
+        font-size: 20px;
+        font-weight: 900;
+        cursor: pointer;
+        border-radius: 3px;
+        margin-right: var(--margin);
+    }
+    #canvas_button_fill{
+        --color : #0058ff;
+        width: var(--width);
+        height: 50px;
+        border:solid 2px var(--color);
+        background-color: transparent;
+        color:var(--color);
+        font-size: 20px;
+        font-weight: 900;
+        cursor: pointer;
+        border-radius: 3px;
+        margin-right: var(--margin);
+        margin-left: var(--margin);
+        display: none;
+    }
+    .rescaler_h{
+        cursor: ew-resize;
+    }
+    .rescaler_v{
+        cursor: ns-resize;
+    }
+</style>
+
+{% endblock %}
+
+
+
+
+
+{% block content %}
+
+{% include 'header.html' %}
+
+<div id="canvas_layer">
+    <canvas id="canvas" width="250" height="250"></canvas>
+    <div id="canvas_buttons_div">
+        <button id="canvas_button_reset">reset</button>
+        <button id="canvas_button_fill">fill</button>
+        <button id="canvas_button_ok">Ok</button>
+        <input type="color" id="canvas_input_color" style="display: none;">
+    </div>
+    
+</div>
+
+<div id="global">
+    <div id="layer">
+
+    </div>
+    <div id="title_div">
+        <h1>prefab</h1>
+    </div>
+    <div id="form_div">
+        <div method="post" id="login_form">
+
+            <div class="input_div" style="display: none;">
+                <label for="prefab_title">title</label>
+                <input type="text" name="prefab_title" id='prefab_title'>
+            </div>
+
+            <div class="input_div" style="display: none;">
+                <label for="prefab_title">description</label>
+                <input type="text" name="description" id='description' placeholder="not required">
+            </div>
+
+            <!--
+            <select id="type">
+                <option value="component">component</option>
+                <option value="theme">theme</option>
+            </select>
+            -->
+            <div id="category_div">
+                <p>category</p>
+                <select id="category">
+                    {% for category in categories %}
+
+                        <option value="{{category.name}}">{{category.name}}</option>
+
+                    {% endfor %}
+                    <option value="other">other</option>
+                    <option value="custom">add category</option>
+                </select>
+            </div>
+
+            <div class="input_div" id="custom_category_div">
+                <input value="" type="text" name="custom_category" id='custom_category' placeholder="new category">
+            </div>
+
+            <div id="file_traitement">
+                <div id="file_traitement_header">
+                    <h2>files</h2>
+                    <button id="preview_button">
+                        <span>preview</span>
+                        <span style="display: none;" class="loader">{% include "inc/loading.html" with dottSpace="2px" dottSize="3px" dottHeight="20px" %}</span>
+                    </button>
+                </div>
+                
+                <div id="file_container">
+
+                    <input class="hidden" id="input_file_html" type="file">
+                    <div id="html_file">
+                        <p id="html_file_text" class="center_abs">html file</p>
+                        <p id="html_file_plus" class="center_abs">+</p>
+                    </div>
+
+                    <div id="file_container_static" title="not required">
+                        <input class="hidden" id="input_file_pic" type="file">
+                        <input class="hidden" id="input_file_static" type="file">
+                    
+                        <div id="file_html_container">
+                            <p id="file_static_container_p_picture">picture
+                                <span class="not_required">not required</span>
+                            </p>
+                            <p style="z-index: 1;" id="file_static_container_p_plus">+</p>
+                            <img src="" id="file_html_img">
+                        </div>
+                    
+                        <div id="file_static_container">
+                            <p id="file_static_container_p_file">static files
+                                <span class="not_required">not required</span>
+                            </p>
+                            <p style="z-index: 1;">+</p>
+                            <div id="file_static_container_files"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button id="submit_button">
+                <p id="button_response">submit</p>
+            </button>
+            <p id="error" style="color:red"></p>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+
+
+
+
+{% block script %}
+
+<script>
+
+function ishtml(fileName){
+    var fsplit = fileName.split(".");
+    if (fsplit[fsplit.length-1] == "html"){
+        return true;
+    }else{
+        return false;
+    }
+}
+
+
+function get_file_data(file){
+    var reader = new FileReader();
+    reader.addEventListener("load", function () {
+        data = this.result;
+        data = data.replaceAll("+", "/*0*/");
+        data = data.replaceAll("&", "/*1*/");
+        return data
+    }, false);
+    
+    if(file){
+        reader.readAsText(file);
+    }
+}
+
+function get_file_data_b64(data){
+
+    data = data.split(",")[1]; 
+    data = data.replaceAll("+", "/*0*/");
+    data = data.replaceAll("&", "/*1*/");
+
+    return data
+}
+
+function encode_to_send(data){
+    data = data.replaceAll("+", "/*0*/");
+    data = data.replaceAll("&", "/*1*/");
+
+    return data
+}
+
+
+var doOnce = 0;
+var input_add_file = document.getElementById("input_file_html");
+
+
+
+
+document.getElementById("html_file").addEventListener("click", function(event){
+    input_add_file.click();
+
+    input_add_file.addEventListener("change", function(event){
+
+        if(doOnce == 0){ doOnce += 1
+
+            var file = this.files[0];
+
+            var reader = new FileReader();
+            reader.addEventListener("load", function () {
+                data = this.result;
+                data = data.replaceAll("+", "/*0*/");
+                data = data.replaceAll("&", "/*1*/");
+            }, false);
+            
+            if(file){
+                if(ishtml(file.name)){
+                    reader.readAsText(file);
+                    document.getElementById("html_file_text").innerHTML = file.name;
+                }
+            }
+
+            setTimeout(function(){doOnce = 0}, 1000);
+        }
+    })
+})
+
+var data = "";
+var data_pic = "";
+var data_static = "";
+
+var pic_file_name = "";
+
+window.fail = 0;
+function input_statuts(status, element){
+    if (status == true || status == 1){
+        window.fail = 0;
+        document.getElementById("button_response").innerHTML = "<i class='fas fa-check'></i>";
+        setTimeout(function(){
+            window.location.href = "/home";
+        }, 200);
+        
+    }else{
+        window.fail = 1;
+        document.getElementById("button_response").innerHTML = "<i class='fas fa-times'></i>";
+        setTimeout(function(){
+            document.getElementById("button_response").innerHTML = "submit";
+        }, 200);
+    }
+    
+}
+  
+/* send */
+document.getElementById("submit_button").addEventListener("click", function(event){
+    document.getElementById("button_response").innerHTML = "...";
+    /*try{var component = document.getElementById("type").value;} catch {input_statuts(false, this)}*/
+    try{var category = document.getElementById("category").value;} catch {console.log("category failed"); input_statuts(false, this)}
+    try{var custom = encode_to_send(document.getElementById("custom_category").value);} catch {console.log("custom failed"); input_statuts(false, this)}
+    try{var title = encode_to_send(document.getElementById("prefab_title").value);} catch {console.log("title failed"); input_statuts(false, this)}
+    try{var description = encode_to_send(document.getElementById("description").value);} catch {console.log("description failed"); input_statuts(false, this)}
+
+    if(window.fail == 0){
+
+        send_post("/save_prefab", 
+        {
+            "data":data,
+            "description":description,
+            "data_pic":data_pic,
+            "pic_file_name":pic_file_name ,
+            "data_static":data_static, 
+            "data_static_files_names":data_static_files_names,
+            "title":title, 
+            "category":category,
+            "custom":custom,
+        }, 
+        function(response){
+            var data = JSON.parse(response);
+            console.log(data)
+
+            if(data["success"] == 0){ document.getElementById("error").innerText = data["error"] }
+
+            input_statuts(data["success"], document.getElementById("submit_button"))
+            window.fail = 0;
+        });
+
+    }else{
+        window.fail = 0;
+    }
+})
+
+
+
+function show_loader(ele){
+    var childs = ele.children;
+    for(var i = 0; i < childs.length; i++){
+        if(childs[i].getAttribute("class", "loader")){
+            childs[i].style.display = "block"
+        }else{
+            childs[i].style.display = "none"
+        }   
+    }
+}
+
+function unshow_loader(ele){
+    var childs = ele.children;
+    for(var i = 0; i < childs.length; i++){
+        if(childs[i].getAttribute("class", "loader")){
+            childs[i].style.display = "none"
+        }else{
+            childs[i].style.display = "block"
+        }   
+    }
+}
+
+
+
+document.getElementById("preview_button").addEventListener("click", function(event){
+    var ele = this;
+    show_loader(ele);
+    send_post("/save_preview", 
+    {
+        "data":data,
+        "data_static":data_static, 
+        "data_static_files_names":data_static_files_names,
+    }, 
+    function(response){
+        var data = JSON.parse(response);
+        if(data["success"] == 1){
+            window.open("/preview", "_blank")
+            unshow_loader(ele)
+        }else{
+            unshow_loader(ele)
+        }
+    });
+})
+
+</script>
+
+
+<script filereader>
+
+
+
+    document.getElementById("file_html_container").addEventListener("click", function(e){
+        document.getElementById("input_file_pic").click();
+    })
+    
+    document.getElementById("file_static_container").addEventListener("click", function(e){
+        document.getElementById("input_file_static").click();
+    })
+
+
+    /* get picture data */
+    var doOnceP = 0;
+    document.getElementById("input_file_pic").addEventListener("change", function(e){
+        if(doOnceP == 0){ doOnceP += 1
+
+            var reader = new FileReader();
+            var file = this.files[0];
+
+            pic_file_name = file.name;
+            
+            reader.addEventListener("load", function (){
+                data_pic = get_file_data_b64(canvas.toDataURL());
+            }, false);
+
+            if(file){
+                var previewImg = window.webkitURL.createObjectURL(file);
+                toggle_show_canvas(previewImg)
+                /*document.getElementById("file_html_img").src = previewImg;*/
+                document.getElementById("file_static_container_p_picture").innerHTML = "";
+                reader.readAsDataURL(file);
+            }
+
+            setTimeout(function(){doOnceP = 0}, 1000);
+        }
+    })
+
+    var canvas_layer = document.getElementById('canvas_layer')
+    var canvas = document.getElementById('canvas')
+    var canvas_layer_toggle = 0
+
+    function toggle_show_canvas(img_src){
+        if(canvas_layer_toggle == 0){
+            read_img_canvas(img_src)
+            canvas_layer_toggle = 1
+            canvas_layer.style.display = "flex"
+            setTimeout(function(){
+                canvas_layer.style.opacity = 1
+            },10)
+        }else{
+            reset();
+            canvas_layer_toggle = 0
+            canvas_layer.style.opacity = null
+            setTimeout(function(){
+                canvas_layer.style.display = null
+            },210)
+        }
+    }
+
+    function rescale(img ,img_width, img_height, rect_scale){
+        var img_x = 0
+        var img_y = 0
+        if(img["width"] == img["height"]){
+            img_x = (img_width-rect_scale)/2
+            img_y = (img_height-rect_scale)/2
+            img_height = rect_scale
+            img_width = rect_scale
+            return {
+                "width": rect_scale,
+                "height": rect_scale,
+                "x": img_x,
+                "y": img_y,
+            }
+        }else{
+            while (img["height"] > rect_scale*1.5) {
+                img["height"] = img["height"] * 0.9
+                img["width"] = img["width"] * 0.9
+            }
+            while (img["width"] > rect_scale*1.5) {
+                img["height"] = img["height"] * 0.9
+                img["width"] = img["width"] * 0.9
+            }
+            return {
+                "width": img["width"],
+                "height": img["height"],
+                "x": ((img_width-rect_scale)/2)+(rect_scale/2)-(img["width"]/2),
+                "y": ((img_height-rect_scale)/2)+(rect_scale/2)-(img["height"]/2),
+            }
+        }
+
+
+
+    }
+
+    function read_img_canvas(img_src){
+        context = canvas.getContext('2d');
+        base_image = new Image();
+        base_image.src = img_src;
+        document.img_data = img_src
+        
+        base_image.onload = function(){
+            var rect_scale = 250; document.rect_scale = rect_scale;
+            var scale = 0.7;
+            document.init_scale = {"width":document.documentElement.clientWidth, "height":document.documentElement.clientHeight}
+
+            canvas.setAttribute("width", document.documentElement.clientWidth)
+            canvas.setAttribute("height", document.documentElement.clientHeight)
+            
+            imgInfo = rescale({"width":this.width, "height":this.height} ,document.documentElement.clientWidth, document.documentElement.clientHeight, rect_scale)
+            document.imgInfo = imgInfo
+            context.drawImage(base_image, imgInfo["x"], imgInfo["y"], imgInfo["width"], imgInfo["height"]);
+            draw_rescaler(imgInfo)
+            draw_middle_rect(imgInfo)
+
+        }
+    }
+    function draw_middle_rect(){
+        context.beginPath();
+        context.lineWidth = "2";
+        context.strokeStyle  = "red";
+        context.rect((document.init_scale["width"]/2)-document.rect_scale/2, (document.init_scale["height"]/2)-document.rect_scale/2, document.rect_scale, document.rect_scale);
+        context.stroke();
+    }
+    function fill_rect(color, rec){
+        if(color == ""){return null}
+        context.beginPath();
+        context.fillStyle = color;
+        context.fillRect(rec[0], rec[1], rec[2], rec[3]);
+        context.stroke();
+    }
+
+    function draw_canvas_img(mx=0, my=0, sx=1, sy=1, color=""){
+        document.imgInfo["x"] = document.imgInfo["x"]+mx
+        document.imgInfo["y"] = document.imgInfo["y"]+my
+        document.imgInfo["width"] = document.imgInfo["width"]*sx
+        document.imgInfo["height"] = document.imgInfo["height"]*sy
+
+        var imgInfo = document.imgInfo
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        fill_rect(color, [(document.init_scale["width"]/2)-document.rect_scale/2, (document.init_scale["height"]/2)-document.rect_scale/2, document.rect_scale, document.rect_scale]);
+        context.drawImage(base_image, imgInfo["x"], imgInfo["y"], imgInfo["width"], imgInfo["height"]);
+        draw_middle_rect();
+    }
+
+    /* get all static file data */
+    var doOnceS = 0;
+    var static_files = []
+    var data_static_files_names = "";
+
+    document.getElementById("input_file_static").addEventListener("change", function(e){
+          if(doOnceS == 0){ doOnceS += 1
+
+            var reader = new FileReader();
+            var file = this.files[0];
+
+            static_files.push(file);
+
+            if (data_static_files_names.length == 0){
+                data_static_files_names = data_static_files_names + file.name;
+            }else{
+                data_static_files_names = data_static_files_names + "/*s*/" + file.name;
+            }
+            
+            reader.addEventListener("load", function (){
+
+                var temp_static_data = get_file_data_b64(this.result);
+
+                if (data_static.length == 0){
+                    data_static = data_static + temp_static_data;
+                }else{
+                    data_static = data_static + "/*s*/" + temp_static_data;
+                }
+              
+                var filename = document.createElement("h5");
+                filename.innerHTML = file.name;
+                var newfile = document.createElement("div");
+                newfile.className = "static_file_name_div";
+                newfile.appendChild(filename);
+                document.getElementById("file_static_container_files").appendChild(newfile);
+               
+            }, false);
+
+
+            reader.readAsDataURL(file);
+            document.getElementById("file_static_container_p_file").innerHTML = "";
+    
+            setTimeout(function(){doOnceS = 0}, 1000);
+        }
+    })
+
+</script>
+
+
+<script CATEGORIES>
+
+    document.getElementById("category").addEventListener("change", function(e){
+        if(this.value == "custom"){
+            document.getElementById("custom_category_div").style.display = "flex";
+        }else{
+            document.getElementById("custom_category_div").style.display = null;
+        }
+    })
+
+</script>
+
+
+<script rescale>
+var mtx = 0
+var mty = 0
+var end = 0;
+var ok = 0;
+document.rdel = []
+
+function translate(e){
+    console.log('azeaze')
+    e.preventDefault();
+
+    var element = document.element;
+    mtx = mtx + e.movementX 
+    mty = mty + e.movementY 
+    element.style.setProperty("left", "calc(50% + {0})".format(mtx.toString()+'px'))
+    element.style.setProperty("top", "calc(50% + {0})".format(mty.toString()+'px'))
+
+    if(end == 0){
+        draw_canvas_img(e.movementX , e.movementY)
+    }else{
+        finish(window.color);
+    }
+    
+}
+
+function translate_end(e){
+    e.preventDefault();
+    if(end == 0){
+        draw_rescaler(document.imgInfo, mtx, mty)
+    }else{
+        finish(window.color);
+    }
+    
+
+}
+
+function debugBase64(base64URL){
+    var win = window.open();
+    win.document.write('<iframe src="' + base64URL  + '" frameborder="0" style="border:0; top:0px; left:0px; bottom:0px; right:0px; width:100%; height:100%;" allowfullscreen></iframe>');
+}
+
+function rescale_img(e){
+    e.preventDefault();
+
+    mxy = e.movementX+e.movementY
+    if (mxy > 0){
+        mxy = 1+(1/100)
+        trallx = ((document.imgInfo["width"]*mxy - document.imgInfo["width"])*-1)/2
+        trally = ((document.imgInfo["height"]*mxy - document.imgInfo["height"])*-1)/2
+    }else{
+        mxy = 1-(1/100)
+        trallx = ((document.imgInfo["width"]*mxy - document.imgInfo["width"])*-1)/2
+        trally = ((document.imgInfo["height"]*mxy - document.imgInfo["height"])*-1)/2
+    }
+
+    draw_canvas_img(trallx, trally, mxy, mxy)
+}
+
+function rescale_img_lt(e){
+    e.preventDefault();
+
+    mxy = (e.movementX+e.movementY)*-1
+    if (mxy > 0){
+        mxy = 1+(1/100)
+        trallx = ((document.imgInfo["width"]*mxy - document.imgInfo["width"])*-1)/2
+        trally = ((document.imgInfo["height"]*mxy - document.imgInfo["height"])*-1)/2
+    }else{
+        mxy = 1-(1/100)
+        trallx = ((document.imgInfo["width"]*mxy - document.imgInfo["width"])*-1)/2
+        trally = ((document.imgInfo["height"]*mxy - document.imgInfo["height"])*-1)/2
+    }
+
+    draw_canvas_img(trallx, trally, mxy, mxy)
+}
+
+function finish(color="white"){
+    end = 1
+    canvas.width = 250
+    canvas.height = 250
+
+    var tsx = Math.abs((imgInfo["width"]-250)/2)
+    var tsy = Math.abs((imgInfo["height"]-250)/2)
+
+    if (tsx > 0){var tsx = ((imgInfo["width"]-250)/2)*-1}
+    if (tsy > 0){var tsy = ((imgInfo["height"]-250)/2)*-1}
+
+    fill_rect(color, [0, 0, document.rect_scale, document.rect_scale]);
+    context.drawImage(base_image, tsx+mtx, tsy+mty, imgInfo["width"], imgInfo["height"]); 
+    draw_rescaler({"x":0,"y":0,"width":250,"height":250,});
+}
+
+function end_rescale_img(e){
+    e.preventDefault();
+    draw_rescaler(document.imgInfo, mtx, mty)
+}
+ 
+function del_rescaler(){
+    for(var i = 0; i < document.rdel.length; i++){
+        document.rdel[i].remove();
+    }
+    document.rdel = []
+}
+
+function draw_rescaler(imgInfo, offsetX=0, offsetY=0){
+    del_rescaler();
+
+    var weight = "10px"
+    var corner_weight = 2;
+    var corner_weight_css = corner_weight.toString()+'px';
+    var width = (imgInfo["width"]-corner_weight).toString()+'px'
+    var height = (imgInfo["height"]-corner_weight).toString()+'px'
+    var bg_color = "transparent";
+
+    var translater = document.createElement("div")
+    translater.setAttribute("style", "position:absolute; width:"+width+"; height:"+height+"; top:50%; transform:translate(-50%,-50%);left:50%;")
+    translater.style.setProperty("left", "calc(50% + "+ offsetX+"px" +")")
+    translater.style.setProperty("top", "calc(50% + "+ offsetY+"px" +")")
+    translater.style.setProperty("cursor", "grab")
+    canvas_layer.appendChild(translater)
+    document.rdel.push(translater)
+    drag_drop(translater, translate, translate_end)
+
+    /* each size */
+    var rescaler_l = document.createElement("div")
+    rescaler_l.setAttribute("style", "position:absolute; width:"+weight+"; height:"+height+"; top:50%; transform:translate(-50%,-50%);")
+    rescaler_l.style.setProperty("left", "calc(50% - "+ ((imgInfo["width"]/2)-offsetX).toString()+"px" +")")
+    rescaler_l.style.setProperty("top", "calc(50% + "+ offsetY+"px" +")")
+    rescaler_l.style.setProperty("background-color", bg_color)
+    rescaler_l.setAttribute("class", "rescaler_h")
+    drag_drop(rescaler_l, rescale_img_lt, end_rescale_img)
+   
+
+    var rescaler_r = document.createElement("div")
+    rescaler_r.setAttribute("style", "position:absolute; width:"+weight+"; height:"+height+"; top:50%; transform:translate(-50%,-50%);")
+    rescaler_r.style.setProperty("left", "calc(50% + "+ ((imgInfo["width"]/2)+offsetX).toString()+"px" +")")
+    rescaler_r.style.setProperty("top", "calc(50% + "+ offsetY+"px" +")")
+    rescaler_r.style.setProperty("background-color", bg_color)
+    rescaler_r.setAttribute("class", "rescaler_h")
+    drag_drop(rescaler_r, rescale_img, end_rescale_img)
+    
+    var rescaler_t = document.createElement("div")
+    rescaler_t.setAttribute("style", "position:absolute; width:"+width+"; height:"+weight+"; left:50%; transform:translate(-50%,-50%);")
+    rescaler_t.style.setProperty("top", "calc(50% - "+ ((imgInfo["height"]/2)-offsetY).toString()+"px" +")")
+    rescaler_t.style.setProperty("left", "calc(50% + "+ offsetX+"px" +")")
+    rescaler_t.style.setProperty("background-color", bg_color)
+    rescaler_t.setAttribute("class", "rescaler_v")
+    drag_drop(rescaler_t, rescale_img_lt, end_rescale_img)
+
+    var rescaler_b = document.createElement("div")
+    rescaler_b.setAttribute("style", "position:absolute;width:"+width+"; height:"+weight+"; left:50%; transform:translate(-50%,-50%);")
+    rescaler_b.style.setProperty("top", "calc(50% + "+ ((imgInfo["height"]/2)+offsetY).toString()+"px" +")")
+    rescaler_b.style.setProperty("left", "calc(50% + "+ offsetX+"px" +")")
+    rescaler_b.style.setProperty("background-color", bg_color)
+    rescaler_b.setAttribute("class", "rescaler_v")
+    drag_drop(rescaler_b, rescale_img, end_rescale_img)
+
+    canvas_layer.appendChild(rescaler_l)
+    canvas_layer.appendChild(rescaler_r)
+    canvas_layer.appendChild(rescaler_t)
+    canvas_layer.appendChild(rescaler_b)
+
+    document.rdel.push(rescaler_l)
+    document.rdel.push(rescaler_r)
+    document.rdel.push(rescaler_t)
+    document.rdel.push(rescaler_b)
+}
+
+function drag_drop(element, func, end_func){
+    element.addEventListener("mousedown", function(e){
+        document.func = func
+        document.element = element
+        document.addEventListener("mousemove", func)
+        document.addEventListener("mouseup", end_func, {"once":1})
+        document.addEventListener("mouseup", remove_list, {"once":1})
+    })
+}
+
+function remove_list(e){
+    e.preventDefault();
+    document.removeEventListener("mousemove", e.currentTarget.func)
+}
+
+document.getElementById("canvas_button_ok").addEventListener("click", function(e){
+    if (ok == 0){
+        finish();
+        show_fill();
+        ok = 1;
+    }else{
+        document.getElementById("file_html_img").setAttribute("src", canvas.toDataURL())
+        data_pic = get_file_data_b64(canvas.toDataURL());
+        toggle_show_canvas();
+    }
+
+})
+function show_fill(){
+    document.getElementById("canvas_button_fill").style.display = "block";
+}
+
+document.getElementById("canvas_button_reset").addEventListener("click", function(e){
+    reset();
+    document.getElementById("canvas_button_fill").style.display = "none";
+})
+function reset(){
+    mtx = 0
+    mty = 0
+    end = 0
+    ok = 0
+    window.color = "white";
+    read_img_canvas(document.img_data)
+    document.getElementById("canvas_button_fill").style.display = "none";
+}
+
+document.getElementById("canvas_button_fill").addEventListener("click", function(e){
+    document.getElementById("canvas_input_color").click();
+    document.getElementById("canvas_input_color").addEventListener("input", function(e){
+        window.color = this.value;
+        if(end == 0){
+            draw_canvas_img(0,0,1,1,this.value)
+        }else{
+            finish(this.value)
+        }
+    })
+})
+</script>
+
+{% endblock %}

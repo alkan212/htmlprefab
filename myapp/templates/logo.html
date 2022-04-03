@@ -1,0 +1,24 @@
+{% load static %}
+
+<style HEADER>
+    body{
+        padding-bottom: 50px;
+    }
+    #header{
+        position: relative;
+        display:flex;
+        align-items:center;
+        background-color:transparent;
+        height:100px;
+    }
+    #logo{
+        width:100px;
+        height:100px;
+    }
+</style>
+
+<div id="header">
+    <img id="logo" src="{% static 'fox_diamond.png' %}">
+    <h1>Html Prefabs</h1>
+</div>
+

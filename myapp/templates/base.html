@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="fr">
+    <head>  
+        <title id="website_title">Title</title>
+        <link rel="icon" type="image/png" href="{% static 'fox_diamond.png' %}">
+        <meta charset="UTF-8">
+        <meta name="description" content="Description">
+        <meta name="keywords" content="keywords">
+        <meta name="author" content="you">
+        <meta name="viewport" content="width=device-width, initial-scale=0.9">
+        {% block head %}
+
+        {% endblock %}
+        <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,400;1,300&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Festive&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Anton&family=Festive&display=swap" rel="stylesheet">
+        <link href="static/search_box_css.css" rel="stylesheet">
+        <style>
+            *{
+                padding: 0;
+                margin: 0;
+                font-family: 'Josefin Sans', sans-serif;
+                font-family: 'Noto Sans', sans-serif;
+                box-sizing: border-box;
+                border : solid 0px #232323;
+                outline: none;
+            }
+            h1{
+                
+            }
+            button, a{
+                outline: none;
+                text-decoration: none;
+            }
+            body{
+                min-width: 100%;
+                min-height:100%;
+            }
+            html{
+                width: 100%;
+                height: 100%;
+            }
+            #global_container{
+                min-width: 100%;
+                min-height:100%;
+            }
+        </style>
+    </head>
+
+
+    <body>
+            {% block content %}
+
+            {% endblock %}
+    
+
+
+    
+    <script src="static/search_box_js.js" crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/107d839ae5.js" crossorigin="anonymous"></script>
+    <script src="static/util.js" crossorigin="anonymous"></script>
+    {% block script %}
+
+    {% endblock %}
+    </body>
+</html>
+
+
+
+

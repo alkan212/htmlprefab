@@ -1,0 +1,60 @@
+
+    
+    <head>
+        <script src="https://kit.fontawesome.com/107d839ae5.js" crossorigin="anonymous"></script>
+        <style>
+            #loading{
+                --space: {{dottSpace|default:"2px"}};
+                --dottSize: {{dottSize|default:"5px"}};
+                --dottHeight: {{dottHeight|default:"20px"}};
+
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                flex-direction: row;
+                position: relative;
+            }
+            #loading i{
+                padding: var(--space);
+                font-size: var(--dottSize);
+                position: relative;
+
+                animation-name: loading_button;
+                animation-duration: 1s;
+                animation-iteration-count:infinite;
+                animation-timing-function: cubic-bezier(0.39, 0.575, 0.565, 1);
+                transition: 1s;
+
+                margin-bottom: calc(var(--dottHeight)/2);
+            }
+
+            #loading_dott_1{
+                animation-delay: 0s;
+            }
+            #loading_dott_2{
+                animation-delay: 0.1s;
+            }
+            #loading_dott_3{
+                animation-delay: 0.2s;
+            }
+
+            @keyframes loading_button{
+                50%{
+                    margin-top:var(--dottHeight);
+                }
+            }
+        </style>
+    </head>
+
+    <div id="loading">
+        <i id="loading_dott_1" class="fas fa-circle"></i>
+        <i id="loading_dott_2" class="fas fa-circle"></i>
+        <i id="loading_dott_3" class="fas fa-circle"></i>
+    </div>
+
+    <script>
+        var s = "{{status}}"
+        if (s == "none"){
+            document.getElementById("loading").style.display = "none";
+        }
+    </script>

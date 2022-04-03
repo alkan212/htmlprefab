@@ -1,0 +1,14 @@
+django
+gunicorn
+django-heroku
+pip
+psycopg2
+pytz
+whitenoise
+setuptools
+requests
+beautifulsoup4
+dj-database-url
+django-storages
+boto3
+python-magic

@@ -1,0 +1,378 @@
+{% load static %}
+<html>
+
+<head>
+
+    <style>
+        
+  *{
+    padding: 0;
+    margin: 0;
+    font-family: 'Josefin Sans', sans-serif;
+    box-sizing: border-box;
+    border : solid 0px #232323;
+    outline: none;
+  }
+
+  button, a{
+   outline: none;
+   text-decoration: none;
+   }
+
+   button{
+        border:solid 0px #232323;
+        border-radius: 3px;
+   }
+
+   html{
+        height: 100%;
+   }
+
+   #tools{
+        border:solid 0px #232323;
+        border-radius: 0px;
+        position: absolute;
+        top: 20px;
+        right: 40px;
+   }
+
+   #tools #tool{
+        position: relative;
+        left:50%;
+        transform: translateX(-50%);
+        border: solid 0px blue;
+        display: grid;
+        gap: 5px;
+        grid-template-rows:auto;
+        grid-template-columns: repeat(2, 1fr);
+        width: 130px;
+        height: 200px;
+        overflow-y: scroll;
+        overflow-x: hidden;
+        scrollbar-color: #5A70BF;
+   }
+   
+
+   #tools #tool div{
+
+        position: relative;
+        width: 50px;
+        height: 50px;
+        background-color: #232323;
+        left: 50%;
+        top:50%;
+        transform: translate(-50%, -50%);
+        cursor: pointer;
+        border-radius: 3px;
+        transition: 0.1s;
+   }
+
+   #tools #tool div:active{
+        transform: translate(-50%, -50%) scale(1.1);
+   }
+   #tools #tool div:hover{
+        background-color: #5A70BF;
+   }
+   
+   #tools #tool div p {
+        position: absolute;
+        left:50%;
+        top:50%;
+        transform: translate(-50%,-50%);
+        color: white;
+   }
+
+   #tools #info{
+        position: relative;
+        left:50%;
+        transform: translateX(-50%);
+        margin-top: 20px;
+        border: solid 3px #232323;
+        min-height: 350px;
+        width: 300px;
+        height: 500px;
+
+        overflow-y: hidden;
+        border-radius: 10px;
+   }
+
+   #tools #info #infoButton{
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        grid-template-rows: auto;
+   }
+   #tools #info #infoButton div{
+        cursor: pointer;
+        border:solid 0px #5A70BF;
+        height: 50px;
+        border-bottom: solid 2px #232323;
+        position: relative;
+        transition: 0.1s;
+
+   }#tools #info #infoButton div:hover{
+        border-bottom: solid 5px #5A70BF;
+   }
+
+   #tools #info #infoButton div h1{
+        color:#232323;
+        font-size: 20px;
+        font-weight: 100;
+   }
+   #tools #info #infoUtulites{
+        width: 100%;
+        height: 450px;
+
+        display:grid;
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-rows: repeat(4, 1fr);
+   }
+   #tools #info #infoUtulites div{
+        width: 80px;
+        height: 80px;
+
+        border-radius: 5px;
+        cursor: pointer;
+        background-color:#5A70BF;
+
+        transition: 0.1s;
+   }#tools #info #infoUtulites div:hover{
+        background-color: #5064aa;
+   }
+
+
+   #tools #info #allElementList{
+        height: 450px;
+        display: none;
+        overflow-y: scroll;
+   }#tools #info #allElementList input{
+        margin: 5px;
+   }
+
+   #tools #info #infoDetails{
+        height: calc(100% - 50px);
+        width: 100%;
+
+        display: none;
+   }
+
+
+   #tools #info #infoDetails div *{
+       
+        font-size: 18px;
+   }
+
+   #detailsButton{
+        transition: 0.2s;
+        height: 10%;
+   }
+   #detailsButton:hover{
+        height: 100%;
+   }
+
+   .divCenter{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+   }
+
+   .Center{
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+   }
+
+
+   #detailsDiv::-webkit-scrollbar {
+        display: none;
+   }
+
+   #detailsDiv {
+   -ms-overflow-style: none;  /* IE and Edge */
+   scrollbar-width: none;  /* Firefox */
+   }
+
+   #allElementList::-webkit-scrollbar {
+        display: none;
+   }
+
+   #allElementList {
+   -ms-overflow-style: none;  /* IE and Edge */
+   scrollbar-width: none;  /* Firefox */
+   }
+
+   .unselectable {
+   -moz-user-select: -moz-none;
+   -khtml-user-select: none;
+   -webkit-user-select: none;
+
+   /*
+        Introduced in IE 10.
+        See http://ie.microsoft.com/testdrive/HTML5/msUserSelect/
+   */
+   -ms-user-select: none;
+   user-select: none;
+   }
+
+
+   /* menuTool */
+   #menuAllTool::-webkit-scrollbar{
+        display: none;
+   }  
+
+
+   /* menu event div */
+   #contener::-webkit-scrollbar{
+        display: none;
+   }
+
+    </style>
+
+</head>
+
+<body style="background-color: #171717; height:100%;min-width: 100%;">
+
+    <div key="1" style="height: 10%; width: 100%; background-color: #171717; position: relative; opacity: 1; display: flex; flex-flow: row wrap;">
+        {% for db in db_list_str %}
+        <button onclick="document.getElementById('curr_db').innerText = this.innerText; for(let ele of document.getElementsByClassName('database')){ele.style.display = 'none'}  ;document.getElementById(this.innerText).style.display = 'flex';" style="height: 45px; min-width: 90px; color: rgb(232, 232, 232); cursor: pointer; position: relative; opacity: 1; top: 50%; transform: translateY(-50%); margin-left: 40px; font-size: 20px; background-color: #171717; transition: all 0.2s ease 0s; box-shadow: none; padding:10px" onmouseover="this.style.backgroundColor = 'red'; this.style.boxShadow = 'red 0px 0px 30px';" onmouseleave="this.style.backgroundColor = '#171717'; this.style.boxShadow = 'none';" class="db_button">
+            {{db}}
+        </button>
+        {% endfor %}
+    </div>
+    
+
+    <!-- content -->
+    <div key="30" style="min-width: 100%; position: relative; opacity: 1; min-height: 0%; margin-top: 100px; background-color: #343434;width: 150%;">
+
+        {% for database in db %} 
+         <!-- content width 90% -->
+        <div class="database" id="{{database.1}}" key="48" style="top: 0px; left: 50%; width: 90%; transform: translateX(-50%); position: relative; opacity: 1; min-height: 100px; display: none; flex-flow: row nowrap;">
+
+            {% for db_data in database.0 %}
+
+                <!-- each div with db items -->
+                <div key="57" class="db_data" style="position: relative; opacity: 1; margin-right: 5px; min-height: 100px; min-width: 100px; background-color: rgb(26, 26, 26);">
+
+                    <!-- item name -->
+                    <div key="58" style="height: 50px; background-color: rgb(255, 0, 0); position: relative; opacity: 1; margin-bottom: 5px; display: flex; align-items: center; justify-content: center; max-width: 400px; min-width: 100px;">
+                        <p key="69" style="color: rgb(255, 255, 255); font-size: 16px; position: relative; opacity: 1; padding: 10px; overflow-wrap: anywhere;">
+                            {{db_data.table_name}}
+                        </p>
+                    </div>
+
+                    {% for value in db_data.values %}
+                    <div value="{{value|default:0}}" key="59" style="height: 100px; background-color: rgb(35, 35, 35); position: relative; opacity: 1; margin-bottom: 5px; min-width: 100px; display: flex; justify-content: center; align-items: center; max-width: 400px; overflow-y: auto;">
+                        <p key="69" style="color: rgb(255, 255, 255); font-size: 16px; position: relative; opacity: 1; padding: 10px; overflow-wrap: anywhere;">
+                            {{value}}
+                        </p>
+                    </div>
+                    {% endfor %}
+
+                </div>  
+            {% endfor %}
+
+        </div>
+        {% endfor %}
+
+        <!-- set the db name -->
+        <h1 id="curr_db" style="top: -100px; left: 50%; color: rgb(201, 201, 201); font-size: 55px; transform: translateX(-50%); position: absolute; opacity: 1; letter-spacing: 2px;">
+            Database
+        </h1>
+    </div>
+
+
+    <script>
+
+        var db_content_div = document.getElementsByClassName("database");
+
+
+
+        for(let content_div of db_content_div){
+
+            var db_data_div = document.createElement("div");
+            db_data_div.setAttribute("style", "position: relative; opacity: 1; margin-right: 5px; min-height: 100px; min-width: 50px; background-color: rgb(26, 26, 26);");
+            db_data_div.setAttribute("database", content_div.id);
+
+            var table_name = document.createElement("div");
+            var table_name_p = document.createElement("p");
+            table_name.setAttribute("style", "height: 50px; background-color: #1a1a1a; position: relative; opacity: 1; margin-bottom: 5px; display: flex; align-items: center; justify-content: center; max-width: 400px; min-width: 50px;")
+            table_name_p.setAttribute("style", "color: rgb(255, 255, 255); font-size: 16px; position: relative; opacity: 1; padding: 10px; overflow-wrap: anywhere;")
+            table_name_p.innerHTML = "";
+            table_name.appendChild(table_name_p);
+
+            db_data_div.appendChild(table_name);
+
+            
+
+            var value_length = (content_div.children[0].children.length-1);
+            for(var i = 1; i <= value_length; i++){
+
+                var this_div_id = content_div.children[0].children[i].getAttribute('value');
+
+                var value_div = document.createElement("div");
+                var value_div_p = document.createElement('p');
+                value_div.setAttribute("value", this_div_id);
+                value_div.setAttribute("style", "height: 100px; background-color: rgb(35, 35, 35); position: relative; opacity: 1; margin-bottom: 5px; min-width: 50px; display: flex; justify-content: center; align-items: center; max-width: 400px; overflow-y: auto; cursor:pointer");
+                value_div.setAttribute("n", i);
+                value_div_p.setAttribute("style", "color: #C70000; font-size: 16px; position: relative; opacity: 1; padding: 10px; overflow-wrap: anywhere;pointer-events:none;");
+                value_div_p.innerHTML = "x";
+                value_div.appendChild(value_div_p);
+
+                db_data_div.appendChild(value_div);
+
+                
+
+                value_div.addEventListener("mousedown", (event)=>{
+
+                    var self_db = event.srcElement.parentElement.getAttribute("database");
+                    var id = event.srcElement.getAttribute('value');
+                    var child = 0;
+
+                    for(var n = 0; n < event.srcElement.parentElement.children.length; n++){
+                        
+                        if(event.srcElement == event.srcElement.parentElement.children[n]){
+                            console.log('oui => ', n);
+                            child = n;
+                        }
+                    }
+                    var test = (event.srcElement.parentElement.parentElement.children.length);
+                    for(var n = 0; n < test; n++){
+
+                        var db_name = event.srcElement.parentElement.parentElement.children[n];
+                    
+                        db_name.children[child].remove();
+                    }
+     
+
+
+                    var xmlhttp = new XMLHttpRequest();
+                    xmlhttp.open("POST", "/delete_db_element", true);
+                    xmlhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+                        xmlhttp.onreadystatechange = function() {
+                            if (this.readyState == 4 && this.status == 200) {
+                                /*var msg = JSON.parse(this.responseText); */
+                                
+                                console.log(this.responseText);
+                            };
+                        }
+                    
+                    
+                    xmlhttp.send("db="+self_db+"&id="+id)
+                });
+            }
+
+
+            content_div.appendChild(db_data_div);
+        }
+
+
+
+        document.getElementsByClassName("database")[0].style.display = "flex";
+        document.getElementById("curr_db").innerHTML = document.getElementsByClassName("database")[0].getAttribute('id');
+    </script>
+
+
+</body> 
+
+</html>

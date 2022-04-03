@@ -1,0 +1,247 @@
+{% extends "base.html" %}
+{% load static %}
+
+
+
+{% block head %}
+
+<style>
+    body{
+        padding-bottom: 50px;
+    }
+    #header{
+        display:flex;
+        align-items:center;
+    }
+    #header img{
+        width:100px;
+        height:100px;
+    }
+
+    #global{
+        position: relative;
+        margin-top:20px;
+        min-height: 200px;
+        max-height: 300px;
+        height:50vh;
+        width:100%;
+        background-color:transparent;
+        overflow-x: hidden;
+        overflow-y: hidden;
+        display: flex;
+        justify-content:center;
+        align-items:center;
+    }
+    #global img{
+        width:100%;
+        min-width:1896px;
+        height:100%;
+    }
+    #on_img{
+        top:0px;
+        position:absolute;
+        width:100%;
+        height: 100%;
+        background-color: transparent;
+        display: flex;
+        justify-content:center;
+        align-items:center;
+        flex-direction:column;
+    }
+    #global h1{
+        color:rgb(0, 0, 0);
+        font-size:100px;
+        font-weight:900;
+        letter-spacing: 6px;
+        background-image: url("static/1000x1000.png");
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+    #on_img p{
+        color:white;
+        font-size:20px;
+        font-weight:100;
+        position:relative;
+        top:10%;
+        cursor: pointer;
+        transition: 0.2s;
+        display: flex;
+        flex-direction:column;
+        align-items:center;
+    }
+    #on_img p:hover{
+       
+    }
+    #on_img p i{
+        color:white;
+        top:-12px;
+        position: relative;
+        opacity: 0;
+        transition:0.2s;
+    }
+    #on_img p:hover i{
+        top:12%;
+        opacity: 1;
+    }
+
+    #content{
+        position: relative;
+        left:50%;
+        transform:translateX(-50%);
+        display: flex;
+        flex-wrap: wrap;
+        width:80%;
+        background-color:transparent;
+        justify-content:center;
+        
+    }
+    .box{
+        position: relative;
+        width: 250px;
+        height:250px;
+        margin: 30px;
+        border:solid 2px #1e3ca0;
+        display: flex;
+        justify-content:center;
+        align-items:center;
+        transition: 0.1s;
+        cursor: pointer;
+        border-radius: 20px;
+        flex-direction: column;
+    }
+    .box:hover{
+
+    }
+    .box h1{
+        transition:0.2s;
+    }
+    .box p{
+        font-size: 24px;    
+        position: absolute;
+        left:50%;
+        top:50%;
+        transform:translate(-50%, -50%);
+        opacity: 0;
+        transition:0.2s;
+    }
+    .box:hover h1{
+     letter-spacing:1px;
+    }
+    .box:hover p{
+        opacity: 1;
+        top:65%;
+    }
+    #horizontal_list{
+        position: relative;
+        left:50%;
+        transform:translateX(-50%);
+        margin-top: 0px;
+        margin-bottom: 20px;
+        width:50%;
+        overflow-x: auto;
+        border:solid 2px transparent;
+        height:100px;
+        padding:5px;
+        display: flex;
+        align-items:center;
+    }
+    .horizontal_list_items{
+        height:100%;
+        width:auto;
+        background-color: transparent;
+        margin-left: 10px;
+        margin-right: 10px;
+        padding:10px;
+        display: flex;
+        justify-content:center;
+        align-items:center;
+        cursor: pointer;
+        flex-grow: 1;
+        position: relative;
+    }
+    .horizontal_list_items:hover .horizontal_list_border{
+        width:90%; 
+    }
+    .horizontal_list_between{
+        height:50%;
+        width:0px;
+        background-color:#1b30a7;
+    }
+    .horizontal_list_items p{
+        color:#232323;
+        font-size: 22px;
+    }
+    .horizontal_list_border{
+        position:absolute; 
+        top:100%; 
+        width:00%; 
+        height:2px;
+        background-color: #232323;
+        transition: 0.2s;
+    }
+
+</style>
+
+{% endblock %}
+
+
+ 
+<!-- block content -->
+{% block content %}
+
+<div id="header">
+    <img src="{% static 'lo.png' %}">
+    <h1>Html Prefabs</h1>
+</div>
+
+<div id="global">
+        <h1>Title</h1>
+</div>
+
+<div id="horizontal_list">
+    <div class="horizontal_list_items">
+        <p>Top
+            <div class="horizontal_list_border"></div>
+        </p>
+    </div>
+
+    <div class="horizontal_list_items">
+        <p>Recent
+            <div class="horizontal_list_border"></div>
+        </p>
+    </div>
+</div>
+
+
+<div id="content">
+
+
+        <div class="box" id="prefabs_title"><h1>Title</h1><p>12</p></div>
+        <div class="box"><h1>Title</h1><p>12</p></div>
+        <div class="box"><h1>Title</h1><p>12</p></div>
+        <div class="box"><h1>Title</h1><p>12</p></div>
+        <div class="box"><h1>Title</h1><p>12</p></div>
+</div>
+
+
+{% endblock %}
+
+
+
+
+
+{% block script %}
+
+
+<script>
+
+var url = "http://localhost:8080/";
+
+document.getElementById("prefabs_title").addEventListener("click", (event)=>{
+    window.location.href = url+"prefab?file="+"title/test.html";
+})
+
+</script>
+
+
+{% endblock %}

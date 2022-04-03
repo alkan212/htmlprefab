@@ -1,0 +1,208 @@
+{% extends "base.html" %}
+{% load static %}
+
+
+
+{% block head %}
+
+<style>
+    #global{
+        position: absolute;
+        left:50%;
+        top:100px;
+        transform:translateX(-50%);
+        padding: 70px;
+        border-radius: 00%;
+        transition: 0.5s;
+        background-image: url("static/1000x1000.png");
+
+        width: 60%;
+        max-width: 600px;
+        min-width: 400px;
+    }
+    #layer{
+        position: absolute;
+        width:calc(100% - 30px);
+        height:calc(100% - 30px);
+        background-color: white;
+        left:50%;
+        top:50%;
+        transform: translate(-50%, -50%);
+        z-index: -1;
+    }
+
+    #title_div{
+        margin-bottom: 50px;
+    }
+    #title_div h1{
+        font-size:40px;
+    }
+
+    #form_div{
+        height:80%;
+    }
+
+    #login_form{
+        border:solid 0px #232323;
+        height:100%;
+    }
+
+    .input_div{
+        width:100%;
+        margin-top: 30px;
+        display:flex;
+        flex-direction:column;
+    }
+
+    .input_div label{
+        font-size:18px;
+        margin-bottom: 3px;
+    }
+
+    .input_div input{
+        border:solid 2px #232323;
+        margin-left:0px;
+        width:100%;
+        height:50px;
+        border-radius: 0px;
+        padding: 5px;
+        font-size:18px;
+    }
+
+    #submit_button{
+        width: 200px;
+        height:100px;
+        background-image: url("static/200x100.png");
+        background-color: transparent;
+        color:white;
+        font-size:18px;
+        border-radius:10px;
+        position: relative;
+        left:50%;
+        transform:translateX(-50%);
+        margin-top: 40px;
+        cursor: pointer;
+        transition: 0s;
+        filter:grayscale(00%);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
+    #submit_button:hover{
+        filter:grayscale(0%);
+        filter: contrast(150%);
+    }
+    #back_arrow{
+        color:#0068ff;
+        position: absolute;
+        top:25px;
+        left:30px;
+        font-size: 24px;
+        background-color: transparent;
+        cursor: pointer;
+    }
+    @media (min-height: 800px) {
+        #global {
+            top:50%;
+            left:50%;
+            transform: translate(-50%, -50%);
+        }
+    }
+</style>
+
+{% endblock %}
+
+
+
+
+
+{% block content %}
+
+{% include 'logo.html' %}
+
+<div id="global">
+    <i id="back_arrow" class="fas fa-long-arrow-alt-left"></i>
+    <div id="layer">
+
+    </div>
+    <div id="title_div">
+        <h1>Login</h1>
+        <p id="error_msg" style="color:red; opacity:0">error message</p>
+    </div>
+    <div id="form_div">
+        <div id="login_form">
+
+            <div class="input_div">
+                <label for="email">email</label>
+                <input type="email" name="email" id='email'>
+            </div>
+
+            <div class="input_div"> 
+                <label for="password">password</label>
+                <input type="password" name="password" id="password">
+            </div>
+
+            <button id="submit_button">
+                <span>login</span>
+                <span id="sss">{% include "inc/loading.html" with dottSpace="3px" status="flex" %}</span>
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+
+
+
+
+{% block script %}
+
+<script>
+   
+    document.getElementById("submit_button").children[1].style.display = "none";
+    document.getElementById("submit_button").children[2].style.display = "none";
+    
+    document.getElementById("submit_button").addEventListener("click", function(event){
+        var email = document.getElementById("email").value;
+        var password = document.getElementById("password").value;
+
+        document.getElementById("submit_button").children[0].style.display = "none";
+        document.getElementById("submit_button").children[1].style.display = "flex";
+
+        send_post("/user_login", {"email":email, "password":password}, function(response){
+            console.log(response);
+            data = JSON.parse(response);
+            if (data["success"] == 1){
+                document.getElementById("submit_button").innerHTML = "<i class='fas fa-check'></i>";
+                setTimeout(function(){
+                    window.location.href = URL+"/home";
+                }, 1000)
+            }else{
+                document.getElementById("submit_button").children[0].style.display = "none";
+                document.getElementById("submit_button").children[1].style.display = "none";
+                document.getElementById("submit_button").children[2].style.display = "block";
+
+                document.getElementById("error_msg").innerHTML = data["error"];
+                document.getElementById("error_msg").style.opacity = 1;
+                setTimeout(function(){
+                    document.getElementById("submit_button").children[0].style.display = "flex";
+                    document.getElementById("submit_button").children[1].style.display = "none";
+                    document.getElementById("submit_button").children[2].style.display = "none";
+                }, 1000)
+                setTimeout(function(){
+                    document.getElementById("error_msg").style.opacity = 0;
+                }, 2000)
+            }
+        });
+    })
+
+    document.getElementById("back_arrow").addEventListener("click", function(e){
+        window.history.go(-1);
+    })
+
+</script>
+
+{% endblock %}
